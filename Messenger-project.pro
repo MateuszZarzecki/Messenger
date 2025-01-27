@@ -20,21 +20,15 @@ CONFIG(debug, debug|release){
 INCLUDEPATH += "libraries/json-develop/include"
 
 SOURCES += \
-    models/models.cpp \
-    services/databaseCommunication.cpp \
-    services/json.cpp \
     services/servercommunication.cpp \
-    ui/ui.cpp \
     main.cpp \
     mainwindow.cpp \
+    view/ui.cpp
 
 HEADERS += \
     mainwindow.h \
-    models/models.hpp \
-    services/databaseCommunication.hpp \
-    services/json.hpp \
     services/servercommunication.hpp \
-    ui/ui.hpp
+    view/ui.hpp
 
 FORMS += \
     mainwindow.ui

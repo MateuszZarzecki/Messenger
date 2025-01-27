@@ -6,8 +6,11 @@
 #include <vector>
 #include <iterator>
 #include "nlohmann/json.hpp"
+#include <QDebug>
 using json = nlohmann::json;
 
-std::string loginUser(sf::Http http, std::string username, std::string password);
-std::string registerUser(sf::Http http, std::string username, std::string password);
-std::string checkExistUser(sf::Http http, std::string username);
+json loginUser(sf::Http& http, std::string username, std::string password);
+json registerUser(sf::Http&http, std::string username, std::string password);
+
+//DEBUG
+void checkConnection(sf::Http& http);

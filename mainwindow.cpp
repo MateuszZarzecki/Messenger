@@ -1,13 +1,14 @@
 #include "mainwindow.h"
-#include "qboxlayout.h"
 #include "ui_mainwindow.h"
 #include <QLabel>
 
 //tworzenie nowych okien
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , serverHttpConn_("http://130.162.35.167", 1880)
 {
     ui->setupUi(this);
     // QCoreApplication::setApplicationName(QString("Messenger"));
@@ -78,13 +79,28 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
+
+void MainWindow::on_checkConnectionButton_clicked()
+{
+    std::thread th(checkConnection, std::ref(serverHttpConn_));
+
+    th.join();
+}
+
+
 void MainWindow::on_loginButton_clicked()
 {
-    // UserService service;
-    // LoginController loginController(service);
-    // LoginView loginView(loginController);
+    std::thread th(loginUser, std::ref(serverHttpConn_), "mateusz", "abc");
 
-    // std::string databaseResponse = loginView.handleLogin();
-    // ui->logo->setText(databaseResponse.c_str());
+    th.join();
+}
+
+
+void MainWindow::on_registerButton_clicked()
+{
+    std::thread th(registerUser, std::ref(serverHttpConn_), "mateusz", "abc");
+
+    th.join();
 }
 

@@ -1,4 +1,4 @@
-#include "services/servercommunicatoin.hpp"
+#include "services/servercommunication.hpp"
 
 //"http://130.162.35.167",1880
 //"/messenger/api/authentication/userExists"
@@ -14,41 +14,85 @@
 //blocking nonblocking
 //
 
-std::string loginUser(sf::Http http, std::string username, std::string password)
+json loginUser(sf::Http& http, std::string username, std::string password)
 {
+    qDebug() << "start";
 
-}
-std::string registerUser(sf::Http http, std::string username, std::string password)
-{
-
-}
-
-std::string checkExistUser(sf::Http http, std::string username)
-{
-    //send and get
     sf::Http::Request request;
     request.setHttpVersion(1,1);
-    request.setUri("/messenger/api/authentication/userExists");
-    request.setMethod(sf::Http::Request::Get);
+    request.setUri("/messenger/api/authentication/login");
+    request.setMethod(sf::Http::Request::Post);
 
-    json userJson;
-    userJson["usename"] = username;
+    json requestJson;
+    requestJson["username"] = username;
+    requestJson["password"] = password;
+    qDebug() << "create request";
+    qDebug() << requestJson.dump();
 
-    request.setBody(userJson.dump());
+    request.setBody(requestJson.dump());
     sf::Http::Response responseRawData = http.sendRequest(request);
+    qDebug() << "get response";
 
-    json responseJson = responseRawData.getBody();
-
-    //process
-    if(responseJson["status"]==100)
+    if(responseRawData.getStatus() == sf::Http::Response::Ok)
     {
-        if(responseJson["doesUserExists"]==true)
-        {
-        }
-        else
-        {
-
-        }
+        json responseJson = json::parse(responseRawData.getBody());
+        qDebug() << responseJson.dump();
+        return responseJson;
+    }
+    else
+    {
+        qDebug() << "no response was returned \n";
+        return json();
     }
 
 }
+json registerUser(sf::Http& http, std::string username, std::string password)
+{
+    qDebug() << "start";
+
+    sf::Http::Request request;
+    request.setHttpVersion(1,1);
+    request.setUri("/messenger/api/authentication/register");
+    request.setMethod(sf::Http::Request::Post);
+
+    json requestJson;
+    requestJson["username"] = username;
+    requestJson["password"] = password;
+
+    request.setBody(requestJson.dump());
+    sf::Http::Response responseRawData = http.sendRequest(request);
+
+    json responseJson = json::parse(responseRawData.getBody());
+    qDebug() << responseJson.dump();
+
+    return responseJson;
+}
+void checkConnection(sf::Http& http)
+{
+    qDebug() << "start";
+
+    sf::Http::Request request;
+    request.setHttpVersion(1,1);
+    request.setUri("/messenger/api/checkConnection");
+    request.setMethod(sf::Http::Request::Post);
+
+    json testConnectionJson;
+    testConnectionJson["message"] = "trying to connect";
+    testConnectionJson["status"] = 100;
+
+    request.setBody(testConnectionJson.dump());
+    sf::Http::Response responseRawData = http.sendRequest(request);
+
+    if(responseRawData.getStatus() == sf::Http::Response::Status::Ok)
+    {
+        json responseJson = json::parse(responseRawData.getBody());
+
+        qDebug() << "message: "  << responseJson["message"].get<std::string>().c_str() << '\n'
+                 << "status: " << responseJson["status"].get<int>() << '\n';
+    }
+    else
+    {
+        qDebug() << "no response was returned \n";
+    }
+}
+

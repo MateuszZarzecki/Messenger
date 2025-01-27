@@ -73,7 +73,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>:/images/icon.png</pixmap>
+     <pixmap resource="resources.qrc">:/images/icon.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -105,17 +105,17 @@
      <string>Hasło</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="loginButton">
+   <widget class="QPushButton" name="checkConnectionButton">
     <property name="geometry">
      <rect>
-      <x>310</x>
+      <x>380</x>
       <y>330</y>
-      <width>80</width>
+      <width>191</width>
       <height>24</height>
      </rect>
     </property>
     <property name="text">
-     <string>Zaloguj się</string>
+     <string>Check Connection</string>
     </property>
    </widget>
    <widget class="QTabWidget" name="tabWidget">
@@ -141,6 +141,32 @@
      </attribute>
     </widget>
    </widget>
+   <widget class="QPushButton" name="loginButton">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>330</y>
+      <width>80</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Login</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="registerButton">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>330</y>
+      <width>80</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Register</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -154,6 +180,8 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
