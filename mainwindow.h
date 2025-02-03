@@ -5,6 +5,11 @@
 #include <SFML/Network.hpp>
 #include "services/servercommunication.hpp"
 #include <thread>
+#include <QLabel>
+#include <QThread>
+#include "chrono"
+#include <atomic>
+#include <iostream>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -21,7 +26,7 @@ public:
     ~MainWindow();
 
     sf::Http serverHttpConn_;
-
+    std::thread* authorisationThread_;
 private slots:
 
     void on_checkConnectionButton_clicked();
@@ -30,8 +35,15 @@ private slots:
 
     void on_registerButton_clicked();
 
+    void on_usernameInput_textChanged(const QString &arg1);
+
+    void on_passwordInput_textChanged(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
+    QString username_;
+    QString password_;
 
+    void useThread(std::thread* threadProcess);
 };
 #endif // MAINWINDOW_H

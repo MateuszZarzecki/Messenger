@@ -14,3 +14,4 @@ json registerUser(sf::Http&http, std::string username, std::string password);
 
 //DEBUG
 void checkConnection(sf::Http& http);
+void checkJwt(sf::Http& http);

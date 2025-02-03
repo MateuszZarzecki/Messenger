@@ -16,22 +16,18 @@
 
 json loginUser(sf::Http& http, std::string username, std::string password)
 {
-    qDebug() << "start";
-
     sf::Http::Request request;
     request.setHttpVersion(1,1);
     request.setUri("/messenger/api/authentication/login");
     request.setMethod(sf::Http::Request::Post);
+    request.setField("Content-type", "application/json");
 
     json requestJson;
     requestJson["username"] = username;
     requestJson["password"] = password;
-    qDebug() << "create request";
-    qDebug() << requestJson.dump();
 
     request.setBody(requestJson.dump());
     sf::Http::Response responseRawData = http.sendRequest(request);
-    qDebug() << "get response";
 
     if(responseRawData.getStatus() == sf::Http::Response::Ok)
     {
@@ -48,12 +44,11 @@ json loginUser(sf::Http& http, std::string username, std::string password)
 }
 json registerUser(sf::Http& http, std::string username, std::string password)
 {
-    qDebug() << "start";
-
     sf::Http::Request request;
     request.setHttpVersion(1,1);
     request.setUri("/messenger/api/authentication/register");
     request.setMethod(sf::Http::Request::Post);
+    request.setField("Content-type", "application/json");   //bearer
 
     json requestJson;
     requestJson["username"] = username;
@@ -62,19 +57,26 @@ json registerUser(sf::Http& http, std::string username, std::string password)
     request.setBody(requestJson.dump());
     sf::Http::Response responseRawData = http.sendRequest(request);
 
-    json responseJson = json::parse(responseRawData.getBody());
-    qDebug() << responseJson.dump();
+    if(responseRawData.getStatus() == sf::Http::Response::Ok)
+    {
+        json responseJson = json::parse(responseRawData.getBody());
+        qDebug() << responseJson["couldLogin"].get<std::string>();
+        return responseJson;
+    }
+    else
+    {
+        qDebug() << "no response was returned \n";
+        return json();
+    }
 
-    return responseJson;
 }
 void checkConnection(sf::Http& http)
 {
-    qDebug() << "start";
-
     sf::Http::Request request;
     request.setHttpVersion(1,1);
     request.setUri("/messenger/api/checkConnection");
     request.setMethod(sf::Http::Request::Post);
+    request.setField("Content-type", "application/json");
 
     json testConnectionJson;
     testConnectionJson["message"] = "trying to connect";
@@ -95,4 +97,7 @@ void checkConnection(sf::Http& http)
         qDebug() << "no response was returned \n";
     }
 }
+void checkJwt(sf::Http& http)
+{
 
+}
