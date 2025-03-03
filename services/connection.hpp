@@ -3,9 +3,11 @@
 #include <thread>
 #include "atomicadv.hpp"
 
-class Connection {
+struct Connection {
 public:
-    AtomicAdv<std::string> sessionId;
+    Connection();
+
+    AtomicAdv<std::string> sessionId = AtomicAdv<std::string>("session");
     std::string username="";
     std::string password="";
     std::string repeatPassword="";

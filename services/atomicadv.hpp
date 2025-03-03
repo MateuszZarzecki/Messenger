@@ -13,3 +13,5 @@ private:
     std::mutex mtx;
     T storedVariable;
 };
+
+#include "atomicadv.tpp"

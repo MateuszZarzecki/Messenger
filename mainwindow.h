@@ -1,6 +1,6 @@
 #pragma once
 #include "ui_mainwindow.h"
-
+#include "services/apihandler.hpp"
 #include <QLabel>
 #include <QThread>
 #include <chrono>
@@ -20,7 +20,6 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
 private slots:
 
     void on_checkConnectionButton_clicked();
@@ -35,4 +34,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+
+    Connection* conn = new Connection();
+    AuthorizationClient authClient;
+    ChatClient chatClient;
 };

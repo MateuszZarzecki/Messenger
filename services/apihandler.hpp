@@ -11,19 +11,22 @@
 #include <iostream>
 #include <SFML/Network.hpp>
 #include "connection.hpp"
-//#include "atomicadv.hpp"
 
 using json = nlohmann::json;
 
-class AuthorizationClient {
+class ServerCommunication {
+public:
+    void sendBackgroundRequest();
+    Connection* conn;
+};
+
+class AuthorizationClient : public ServerCommunication{
 public:
     AuthorizationClient (Connection* conn);
-
-    void loginUser(sf::Http& http, std::string username, std::string password);
-    void registerUser(sf::Http& http, std::string username, std::string password);
+    void loginUser(std::string username, std::string password);
+    void registerUser(std::string username, std::string password);
 
 private:
-    Connection* conn;
 
     json fetchSessionId();
     bool saveSessionId(std::string& sessionId);
