@@ -1,7 +1,5 @@
 #include "mainwindow.h"
 
-#include <QApplication>
-
 /*
  Splash screen - QSplashScreen
  multiple windows

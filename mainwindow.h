@@ -1,15 +1,11 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
+#include "ui_mainwindow.h"
 
-#include <QMainWindow>
-#include <SFML/Network.hpp>
-#include "services/servercommunication.hpp"
-#include <thread>
 #include <QLabel>
 #include <QThread>
-#include "chrono"
+#include <chrono>
 #include <atomic>
-#include <iostream>
+#include <QApplication>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -25,8 +21,6 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    sf::Http serverHttpConn_;
-    std::thread* authorisationThread_;
 private slots:
 
     void on_checkConnectionButton_clicked();
@@ -41,9 +35,4 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    QString username_;
-    QString password_;
-
-    void useThread(std::thread* threadProcess);
 };
-#endif // MAINWINDOW_H
