@@ -21,10 +21,10 @@ INCLUDEPATH += "libraries/json-develop/include"
 
 SOURCES += \
     services/apihandler.cpp \
-    services/atomicadv.cpp \
-    services/connection.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    services/atomicadv.tpp \
+    services/connection.cpp
 
 HEADERS += \
     mainwindow.h \
