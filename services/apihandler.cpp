@@ -3,58 +3,55 @@
 //"http://130.162.35.167",1880
 //"/messenger/api/authentication/userExists"
 
-AuthorizationClient::AuthorizationClient(Connection* conn) {
-    this->conn = conn;
-}
 
-void ServerCommunication::sendBackgroundRequest() {
-    sf::Http::Request request;
-    request.setHttpVersion(1,1);
-    request.setMethod(sf::Http::Request::Post);
+// void ServerCommunication::sendBackgroundRequest() {
+//     sf::Http::Request request;
+//     request.setHttpVersion(1,1);
+//     request.setMethod(sf::Http::Request::Post);
 
-    json userDataJson;
-    userDataJson["username"] = conn->username;
-    userDataJson["password"] = conn->password;
-    userDataJson["sessionId"] = conn->sessionId.load();
+//     json userDataJson;
+//     userDataJson["username"] = conn->username;
+//     userDataJson["password"] = conn->password;
+//     userDataJson["sessionId"] = conn->sessionId.load();
 
 
-    request.setUri("/messenger/api/validSession");
-    request.setBody(userDataJson.dump());
-    sf::Http::Response response = conn->serverHttpConn.sendRequest(request);
-    bool validSession = true;
+//     request.setUri("/messenger/api/validSession");
+//     request.setBody(userDataJson.dump());
+//     sf::Http::Response response = conn->serverHttpConn.sendRequest(request);
+//     bool validSession = true;
 
-    if(response.getStatus() == sf::Http::Response::Ok) {
+//     if(response.getStatus() == sf::Http::Response::Ok) {
 
-        json responseJson = json::parse(response.getBody());
-        if(responseJson["statusCode"] == Connection::Status::Ok) {
-            if(responseJson["valid"]) {
-                qDebug() << "Valid session";
-            }else {
-                qDebug() << "Not valid session";
-                validSession = false;
-            }
-        }
-    }
-    if(validSession) {
+//         json responseJson = json::parse(response.getBody());
+//         if(responseJson["statusCode"] == Connection::Status::Ok) {
+//             if(responseJson["valid"]) {
+//                 qDebug() << "Valid session";
+//             }else {
+//                 qDebug() << "Not valid session";
+//                 validSession = false;
+//             }
+//         }
+//     }
+//     if(validSession) {
 
-        request.setUri("/messenger/api/updateSessionTimestamp");
-        response = conn->serverHttpConn.sendRequest(request);
+//         request.setUri("/messenger/api/updateSessionTimestamp");
+//         response = conn->serverHttpConn.sendRequest(request);
 
-        if(response.getStatus() == sf::Http::Response::Ok) {
-            json responseJson = json::parse(response.getBody());
-            if(responseJson["statusCode"] == Connection::Status::Ok) {
+//         if(response.getStatus() == sf::Http::Response::Ok) {
+//             json responseJson = json::parse(response.getBody());
+//             if(responseJson["statusCode"] == Connection::Status::Ok) {
 
-                if(responseJson["changed"]) {
-                    qDebug() << "Changed session timestamp";
-                }else {
-                    qDebug() << "error with changing session timestamp";
-                }
-            }
-        }
-    }
-}
+//                 if(responseJson["changed"]) {
+//                     qDebug() << "Changed session timestamp";
+//                 }else {
+//                     qDebug() << "error with changing session timestamp";
+//                 }
+//             }
+//         }
+//     }
+// }
 
-json AuthorizationClient::fetchSessionId()
+json ApiHandler::Authorization::Private::fetchSessionId()
 {
     std::ifstream iFile;
     json sessionIdJson;
@@ -74,7 +71,7 @@ json AuthorizationClient::fetchSessionId()
     return sessionIdJson;
 }
 
-bool AuthorizationClient::saveSessionId(std::string& sessionId)
+bool ApiHandler::Authorization::Private::saveSessionId(std::string& sessionId)
 {
     bool saved = true;
     std::ofstream oFile;
@@ -97,7 +94,7 @@ bool AuthorizationClient::saveSessionId(std::string& sessionId)
     return saved;
 
 }
-void AuthorizationClient::loginUser(sf::Http& http, std::string username, std::string password)
+void ApiHandler::Authorization::loginUser(sf::Http& http, std::string username, std::string password)
 {
     sf::Http::Request request;
     request.setHttpVersion(1,1);
@@ -105,13 +102,14 @@ void AuthorizationClient::loginUser(sf::Http& http, std::string username, std::s
     request.setMethod(sf::Http::Request::Post);
     request.setField("Content-type", "application/json");
 
-    conn->sessionId.store(fetchSessionId());
+    conn->sessionId.store(ApiHandler::Authorization::Private::fetchSessionId());
 
     json requestJson;
     requestJson["sessionId"] = conn->sessionId.load();
     requestJson["username"] = username;
     requestJson["password"] = password;
 
+    requestJson["serverConn"] = sessionValidationJson;
     request.setBody(requestJson.dump());
     sf::Http::Response responseRawData = http.sendRequest(request);
 
@@ -144,7 +142,7 @@ void AuthorizationClient::loginUser(sf::Http& http, std::string username, std::s
         qDebug() << "no response was returned \n";
     }
 }
-void AuthorizationClient::registerUser(sf::Http& http, std::string username, std::string password)
+void ApiHandler::Authorization::registerUser(sf::Http& http, std::string username, std::string password)
 {
     sf::Http::Request request;
     request.setHttpVersion(1,1);
@@ -180,7 +178,7 @@ void AuthorizationClient::registerUser(sf::Http& http, std::string username, std
 
 }
 
-unsigned int AuthorizationClient::countCharsInString (std::string& chars, std::string& inputString)
+unsigned int ApiHandler::Authorization::Private::countCharsInString (std::string& chars, std::string& inputString)
 {
     unsigned int count = 0;
     std::size_t firstIndex = inputString.find_first_of(chars);
@@ -193,10 +191,10 @@ unsigned int AuthorizationClient::countCharsInString (std::string& chars, std::s
     return count;
 }
 
-bool AuthorizationClient::validateLoginInput()
+bool ApiHandler::Authorization::Private::validateLoginInput()
 {
-    std::string usernameStdString = conn->username;
-    std::string passwordStdString = conn->password;
+    std::string usernameStdString = conn->username.load();
+    std::string passwordStdString = conn->password.load();
 
     std::string digits = "0123456789";
     std::string letters = "abcdefghijklmnopqrstuvwxyz";
@@ -226,13 +224,12 @@ bool AuthorizationClient::validateLoginInput()
     }
     return validInputs;
 }
-bool AuthorizationClient::validateRegisterInput()
+bool ApiHandler::Authorization::Private::validateRegisterInput()
 {
-    std::string usernameStdString = conn->username;
-    std::string passwordStdString = conn->password;
-    std::string repeatPasswordStdString = conn->repeatPassword;
-    std::string emailStdString = conn->email;
-
+    std::string usernameStdString = conn->username.load();
+    std::string passwordStdString = conn->password.load();
+    std::string repeatPasswordStdString = conn->repeatPassword.load();
+    std::string emailStdString = conn->email.load();
 
     std::string digits = "0123456789";
     std::string letters = "abcdefghijklmnopqrstuvwxyz";

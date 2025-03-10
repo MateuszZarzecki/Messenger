@@ -2,19 +2,23 @@
 #include <SFML/Network.hpp>
 #include <thread>
 #include "atomicadv.hpp"
+#include "nlohmann/json.hpp"
+
+using json = nlohmann::json;
 
 struct Connection {
 public:
     Connection();
 
-    AtomicAdv<std::string> sessionId = AtomicAdv<std::string>("session");
-    std::string username="";
-    std::string password="";
-    std::string repeatPassword="";
-    std::string email="";
+    AtomicAdv<std::string> sessionId;
+    AtomicAdv<std::string> username;
+    AtomicAdv<std::string> password;
+    AtomicAdv<std::string> repeatPassword;
+    AtomicAdv<std::string> email;
+    AtomicAdv<json> serverConnTemplateJosn;
 
-    sf::Http serverHttpConn = sf::Http("http://130.162.35.167", 1880);
-    std::thread* authorisationThread = new std::thread();
+    AtomicAdv<sf::Http> serverHttpConn;
+    std::thread* authorisationThread;
 
     enum Status {
         //2xx: success

@@ -23,7 +23,6 @@ SOURCES += \
     services/apihandler.cpp \
     main.cpp \
     mainwindow.cpp \
-    services/atomicadv.tpp \
     services/connection.cpp
 
 HEADERS += \

@@ -14,32 +14,27 @@
 
 using json = nlohmann::json;
 
-class ServerCommunication {
-public:
-    void sendBackgroundRequest();
+namespace ApiHandler {
     Connection* conn;
-};
 
-class AuthorizationClient : public ServerCommunication{
-public:
-    AuthorizationClient (Connection* conn);
-    void loginUser(std::string username, std::string password);
-    void registerUser(std::string username, std::string password);
+    namespace Authorization {
+        void loginUser(sf::Http& http, std::string username, std::string password);
+        void registerUser(sf::Http& http, std::string username, std::string password);
 
-private:
+        namespace Private{
+            json fetchSessionId();
+            bool saveSessionId(std::string& sessionId);
 
-    json fetchSessionId();
-    bool saveSessionId(std::string& sessionId);
+            bool validateLoginInput();
+            bool validateRegisterInput();
+            unsigned int countCharsInString (std::string& chars, std::string& inputString);
+        }
 
-    bool validateLoginInput();
-    bool validateRegisterInput();
-    unsigned int countCharsInString (std::string& chars, std::string& inputString);
-};
+    }
+    namespace Chat {
 
-class ChatClient {
-
-};
-
+    }
+}
 //DEBUG
 void checkConnection(sf::Http& http);
 void checkJwt(sf::Http& http);
