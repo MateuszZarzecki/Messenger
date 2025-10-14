@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "authenticationMenu.hpp"
 #include "menuBase.hpp"
 #include "input.hpp"
 #include "consoleUtils.hpp"
@@ -29,8 +30,17 @@ int main() {
     // InputHandler inputHandler;
     // inputHandler.getInput();
 
-    //---FOURTH TEST
-    Console console(std::cout);
-    console << "anc";
+    //---FOURTH TEST - PASSED
+    // Console console(std::cout);
+    // console << "anc";
+
+    //---FIFTH TEST --- PASSED
+    // Console console(std::cout);
+    // char c = console.getChar();
+    // console << c << std::endl << c;
+
+    //---SIXTH TEST
+    AuthenticationMenu auth;
+    auth.init();
     return 0;
 }

@@ -6,16 +6,14 @@
 
 #include "projectBase.hpp"
 #include "input.hpp"
-
-struct MenuRepository;
+#include "consoleUtils.hpp"
 
 class MenuBase {
 public:   
-    static void setMenuRepository(MenuRepository* menuRepository);
     virtual void init() = 0;
 protected:
-    static MenuRepository* menuRepository;
-    InputHandler inputHandler;  
+    Console console;
+    InputHandler inputHandler;
 
     std::string menuName;
     std::unordered_map<std::string,MenuBase*> submenus;
@@ -30,18 +28,22 @@ public:
     void clear();
 
     void addHeader(std::string menuName);
-    void addContent(std::string content);
+    void addContent(std::string newContent);
     void addFooter();
 private:
     Console console;
     std::string header, content, footer;
 };
-struct MenuRepository {
-    MenuRepository();
 
-    MenuBase* current;
-    std::unordered_map<MenuBase*,std::string> menus;
-    std::vector<std::string> previous;
-    MenuDisplay menuDisplay;
+// class MenuRep {
+
+//     friend class SignalHandler;
+namespace MenuRepository {
+    inline MenuBase* current;
+    inline std::unordered_map<MenuBase*,std::string> menus;
+    inline std::vector<std::string> previous;
+    inline MenuDisplay menuDisplay;
 };
+
+
 

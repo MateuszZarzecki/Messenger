@@ -1,8 +1,7 @@
 #include "menuManager.hpp"
 
 MenuManager::MenuManager() {
-    MenuBase::setMenuRepository(&menuRepository);
-    menuRepository.current = new AuthenticationMenu();
+    MenuRepository::current = new AuthenticationMenu();
 }
 MenuManager::~MenuManager() {
     // delete menuRepository.current;
@@ -11,7 +10,7 @@ MenuManager::~MenuManager() {
     // }
 }
 void MenuManager::display() {
-    while(menuRepository.current) {
-        menuRepository.current->init();
+    while(MenuRepository::current) {
+        MenuRepository::current->init();
     }
 } 

@@ -2,20 +2,15 @@
 #include "input.hpp"
 #include "consoleUtils.hpp"
 
-MenuRepository* MenuBase::menuRepository = nullptr;
 
-void MenuBase::setMenuRepository(MenuRepository* menuRepository) {
-    MenuBase::menuRepository = menuRepository;
-    InputHandler::setMenuRepository(menuRepository);
-}
 TerminationCode MenuBase::chooseSubmenu(std::string output) {
-    std::cout << output;
-    menuRepository->menuDisplay.addHeader(menuName);
+    console << output;
+    MenuRepository::menuDisplay.addHeader(menuName);
     std::pair<std::string,TerminationCode> inputLine = inputHandler.getInput();
     
     if(inputLine.second != TerminationCode::QUIT) {
         if(submenus.count(inputLine.first)) {
-            menuRepository->current = submenus[inputLine.first];
+            MenuRepository::current = submenus[inputLine.first];
         } else {
             wrongInput();
             return TerminationCode::FAILURE;
@@ -26,20 +21,20 @@ TerminationCode MenuBase::fillForm(std::vector<std::string> outputs, std::vector
     std::pair<std::string, TerminationCode> inputLine;
     
     for(int i=0; i<(int)outputs.size(); i++) {
-        std::cout << outputs[i];
+        console << outputs[i];
         inputLine = inputHandler.getInput();
         if(inputLine.second != TerminationCode::QUIT) {
             inputs.push_back(inputLine.first);
         }
-    } std::cout << std::endl;
+    } console << ConsoleCode::NLINE;
 
-    menuRepository->current = submenus[""];
+    MenuRepository::current = submenus[""];
     return inputLine.second;
 }
 void MenuBase::wrongInput() {
-    menuRepository->menuDisplay.clear();
-    menuRepository->menuDisplay.addContent("Wrong input. Try again or see [:m;]");
-    menuRepository->menuDisplay.display();
+    MenuRepository::menuDisplay.clear();
+    MenuRepository::menuDisplay.addContent("\n\nWrong input. Try again or see [:m;]");
+    MenuRepository::menuDisplay.display();
 }
 
 void MenuDisplay::addHeader(std::string menuName) {
@@ -55,15 +50,14 @@ void MenuDisplay::addHeader(std::string menuName) {
        header +=  "| Messenger | BACK[:b;] - QUIT[:q;] - HOME[:h;] - MANUAL[:m;] |\n"
                   "|___________|"+               menuHeaderCentered            +"|\n\n";
 }
-void MenuDisplay::addContent(std::string content) {
-    this->content += content;
+void MenuDisplay::addContent(std::string newContent) {
+    content = newContent;
 }
 void MenuDisplay::clear() {
     header = content = "";
 }
 void MenuDisplay::display() {
-    std::cout << header << content << "\n";
+    console << header << content;
 }
-MenuRepository::MenuRepository() {
+//MenuBase* MenuRepository::current = nullptr;
 
-}

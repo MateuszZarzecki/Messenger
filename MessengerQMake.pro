@@ -7,7 +7,7 @@ CONFIG -= qt
 
 SOURCES += $$files(*.cpp,true)
 
-HEADERS += $$files(*.h*,true)
+HEADERS += $$files(include/*.h*,true)
 
 INCLUDEPATH += $$PWD/include \
            $$PWD/include/menu \

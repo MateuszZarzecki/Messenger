@@ -2,7 +2,7 @@
 #include "consoleUtils.hpp"
 #include "menuBase.hpp"
 
-SignalHandler::SignalHandler(MenuRepository& menuRepository) : menuRepository(menuRepository) {
+SignalHandler::SignalHandler() {
 
     prefix = ':'; postfix = ';'; paramChar = '=';
     signalTerminations = {

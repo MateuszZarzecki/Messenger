@@ -10,19 +10,16 @@
 #include "projectBase.hpp"
 #include "consoleUtils.hpp"
 
-struct MenuRepository;
-
 enum class SignalCode { NONE=-1,FINISH,QUIT,HOME,MANUAL,BACK,TEXTCOLOR };
 
 class SignalHandler { 
-public: 
-    SignalHandler(MenuRepository& menuRepository);
+public:
+    SignalHandler();
 
     TerminationCode handleSignals(std::string input);
     std::string unescapePrefixes(std::string input);
 private:
-    MenuRepository& menuRepository;
-    Console console;
+    //Console console;
 
     char prefix, postfix, paramChar;
     std::unordered_map<std::string, SignalCode> signals;

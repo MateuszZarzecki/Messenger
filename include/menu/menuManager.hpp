@@ -10,8 +10,6 @@ public:
     MenuManager();
     ~MenuManager();
     void display();
-private:
-    MenuRepository menuRepository;
 };
 
 //key
