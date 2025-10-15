@@ -19,7 +19,7 @@ protected:
     std::unordered_map<std::string,MenuBase*> submenus;
 
     TerminationCode chooseSubmenu(std::string output);
-    TerminationCode fillForm(std::vector<std::string> outputs, std::vector<std::string> inputs);
+    TerminationCode fillForm(std::vector<std::string> outputs, std::vector<std::string> inputLabels, std::vector<std::string>& inputs);
     void wrongInput();
 };
 class MenuDisplay {
@@ -35,12 +35,9 @@ private:
     std::string header, content, footer;
 };
 
-// class MenuRep {
-
-//     friend class SignalHandler;
 namespace MenuRepository {
     inline MenuBase* current;
-    inline std::unordered_map<MenuBase*,std::string> menus;
+    inline std::unordered_map<std::string, MenuBase*> menus;
     inline std::vector<std::string> previous;
     inline MenuDisplay menuDisplay;
 };

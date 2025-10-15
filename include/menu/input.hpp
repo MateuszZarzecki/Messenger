@@ -9,6 +9,7 @@
 
 #include "projectBase.hpp"
 #include "signal.hpp"
+#include "consoleUtils.hpp"
 
 class InputHandler {
 public:
@@ -16,5 +17,6 @@ public:
 
     std::pair<std::string,TerminationCode> getInput(bool multiLine = false);
 private:
+    Console console;
     SignalHandler signalHandler;
 };

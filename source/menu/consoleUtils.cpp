@@ -29,6 +29,8 @@ Console& Console::operator<<(ConsoleCode consoleCode) {
         case ConsoleCode::UNLOCK:
             locked = false;
             break;
+        case ConsoleCode::CLEAR_PAGE:
+            system("cls");
         default: break;
         //REST CODES
     }

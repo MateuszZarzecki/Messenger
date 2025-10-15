@@ -4,8 +4,15 @@
 
 
 TerminationCode MenuBase::chooseSubmenu(std::string output) {
-    console << output;
+    console << ConsoleCode::CLEAR_PAGE;
+
+    MenuRepository::menuDisplay.clear();
     MenuRepository::menuDisplay.addHeader(menuName);
+    MenuRepository::menuDisplay.addContent(output);
+    MenuRepository::menuDisplay.display();
+
+    console << "(i) Choose Menu: ";
+
     std::pair<std::string,TerminationCode> inputLine = inputHandler.getInput();
     
     if(inputLine.second != TerminationCode::QUIT) {
@@ -17,14 +24,24 @@ TerminationCode MenuBase::chooseSubmenu(std::string output) {
         }
     } return inputLine.second;
 }
-TerminationCode MenuBase::fillForm(std::vector<std::string> outputs, std::vector<std::string> inputs) {
+TerminationCode MenuBase::fillForm(std::vector<std::string> outputs, std::vector<std::string> inputLabels, std::vector<std::string>& inputs) {
+    console << ConsoleCode::CLEAR_PAGE;
+
+    MenuRepository::menuDisplay.clear();
+    MenuRepository::menuDisplay.addHeader(menuName);
+    MenuRepository::menuDisplay.display();
+
+    for(std::string outputLine : outputs) {
+        console << outputLine << ConsoleCode::NLINE;
+    }
+
     std::pair<std::string, TerminationCode> inputLine;
     
-    for(int i=0; i<(int)outputs.size(); i++) {
-        console << outputs[i];
+    for(int i=0; i<(int)inputLabels.size(); i++) {
+        console << inputLabels[i];
         inputLine = inputHandler.getInput();
         if(inputLine.second != TerminationCode::QUIT) {
-            inputs.push_back(inputLine.first);
+            inputs[i] = inputLine.first;
         }
     } console << ConsoleCode::NLINE;
 
@@ -57,7 +74,7 @@ void MenuDisplay::clear() {
     header = content = "";
 }
 void MenuDisplay::display() {
-    console << header << content;
+    console << header << content << ConsoleCode::NLINE;
 }
 //MenuBase* MenuRepository::current = nullptr;
 

@@ -5,6 +5,7 @@ InputHandler::InputHandler() {}
 std::pair<std::string,TerminationCode> InputHandler::getInput(bool multiLine){
     std::string message = "", inputLine = "";
     char character;
+
     do {
         while(true) {
             {

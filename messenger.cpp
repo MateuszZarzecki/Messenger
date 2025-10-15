@@ -4,6 +4,8 @@
 #include "menuBase.hpp"
 #include "input.hpp"
 #include "consoleUtils.hpp"
+#include "menuManager.hpp"
+#include "localUserApi.hpp"
 
 #include <limits>
 
@@ -39,8 +41,37 @@ int main() {
     // char c = console.getChar();
     // console << c << std::endl << c;
 
-    //---SIXTH TEST
-    AuthenticationMenu auth;
-    auth.init();
+    //---SIXTH TEST ---PASSED
+    // AuthenticationMenu auth;
+    // auth.init();
+
+    //---SEVENTH TEST ---PASSED
+    // MenuManager menuManager;
+    // menuManager.display();
+
+    //---EIGHTH TEST --- FAILED
+    // LocalUserAPI local;
+    // local.login("mateusz123!@#", "mati");
+
+    // try
+    // {
+    //     http::Request request{"http://130.162.35.167:1880/messenger/api/user/login"};
+    //     json bodyJson = json({{"serverConn", {{"username", "mateusz123!@#"}, {"password", "mati"}}}});
+    //     std::cout << bodyJson.dump() << std::endl;
+    //     const std::string body = "{\"serverConn\":{\"username\":\"mateusz123!@#\",\"password\":\"mati\"}}";
+    //     const auto response = request.send("POST", bodyJson.dump(), {
+    //                                                          {"Content-Type", "application/json"}
+    //                                                      });
+    //     std::cout << body << std::endl;
+    //     std::cout << std::string{response.body.begin(), response.body.end()} << '\n'; // print the result
+    // }
+    // catch (const std::exception& e)
+    // {
+    //     std::cerr << "Request failed, error: " << e.what() << '\n';
+    // }
+    // LocalUserAPI local;
+    // local.login("mateusz123!@#", "mati");
+    MenuManager menuManager;
+    menuManager.display();
     return 0;
 }
