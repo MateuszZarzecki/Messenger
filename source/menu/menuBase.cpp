@@ -3,52 +3,41 @@
 #include "consoleUtils.hpp"
 
 
-TerminationCode MenuBase::chooseSubmenu(std::string output) {
+TerminationCode MenuBase::chooseSubmenu(std::string& output) {
+    std::vector<std::string> inputs;
+    output += "(i) Choose Menu: ";
+
     menuDisplay.clear();
-    menuDisplay.addHeader(menuName);
-    menuDisplay.addContent(output);
+    menuDisplay.displayHeader(menuName);
+    inputs = menuDisplay.displayContent({output},true);
 
-    console << "(i) Choose Menu: ";
+    if(inputs.empty()) {
+        return TerminationCode::QUIT;
+    }
+    MenuRepository::previousMenus.push(MenuRepository::current);
+    MenuRepository::current = submenus[inputs[0]];
 
-    std::pair<std::string,TerminationCode> inputLine = inputHandler.getInput();
-    
-    if(inputLine.second != TerminationCode::QUIT) {
-        if(submenus.count(inputLine.first)) {
-            MenuRepository::previousMenus.push(MenuRepository::current);
-            MenuRepository::current = submenus[inputLine.first];
-        } else {
-            wrongInput();
-            return TerminationCode::FAILURE;
-        }
-    } return inputLine.second;
+    return TerminationCode::NONE;
 }
-TerminationCode MenuBase::fillForm(std::vector<std::string> outputs, std::vector<std::string> inputLabels, std::vector<std::string>& inputs) {
+TerminationCode MenuBase::fillForm(std::vector<std::string>& outputs, std::vector<std::string>& inputs) {
     menuDisplay.clear();
-    menuDisplay.addHeader(menuName);
+    menuDisplay.displayHeader(menuName);
+    inputs = menuDisplay.displayContent(outputs,true);
 
-    for(std::string outputLine : outputs) {
-        console << outputLine << ConsoleCode::NLINE;
+    if(inputs.empty()) {
+        return TerminationCode::QUIT;
     }
 
-    std::pair<std::string, TerminationCode> inputLine;
-
-    for(int i=0; i<(int)inputLabels.size(); i++) {
-        console << inputLabels[i];
-        inputLine = inputHandler.getInput();
-        if(inputLine.second != TerminationCode::QUIT) {
-            inputs[i] = inputLine.first;
-        }
-    } console << ConsoleCode::NLINE;
-
+    MenuRepository::previousMenus.push(MenuRepository::current);
     MenuRepository::current = submenus[""];
-    return inputLine.second;
+    return TerminationCode::NONE;
 }
 void MenuBase::wrongInput() {
     menuDisplay.clear();
-    menuDisplay.addContent("\n\nWrong input. Try again or see [:m;]");
+    menuDisplay.displayContent({"\n\nWrong input. Try again or see [:m;]"});
 }
 
-void MenuDisplay::addHeader(std::string menuName) {
+void MenuDisplay::displayHeader(std::string menuName) {
         const unsigned int MENU_HEADER_MAX_SIZE = 49;
         unsigned int centerPos = (MENU_HEADER_MAX_SIZE - menuName.size()) / 2;
         std::string menuHeaderCentered = "";
@@ -61,8 +50,21 @@ void MenuDisplay::addHeader(std::string menuName) {
        header +=  "| Messenger | BACK[:b;] - QUIT[:q;] - HOME[:h;] - MANUAL[:m;] |\n"
                   "|___________|"+               menuHeaderCentered            +"|\n\n";
 }
-void MenuDisplay::addContent(std::string newContent) {
-    content = newContent;
+std::vector<std::string> MenuDisplay::displayContent(std::vector<std::string> outputs, bool lastIsInput) {
+    std::vector<std::string> inputs;
+    std::pair<std::string, TerminationCode> inputLine;
+
+    for(int i=0;i<outputs.size();i++) {
+        console << outputs[i];
+        inputLine = inputHandler.getInput();
+
+        if(inputLine.second == TerminationCode::QUIT) {
+            return {};
+        }
+        inputs.push_back(inputLine.first);
+        console << ConsoleCode::NLINE;
+    }
+    return inputs;
 }
 void MenuDisplay::clear() {
     header = content = "";

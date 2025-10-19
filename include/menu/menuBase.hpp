@@ -9,23 +9,14 @@
 #include "consoleUtils.hpp"
 #include "stack"
 
-class Content {
-
-};
-class InputContent : public Content {
-
-};
-class OutputContent : public Content {
-
-};
-
 class MenuDisplay {
 public:
     void clear();
 
-    void addHeader(std::string menuName);
-    void addContent(std::vector<Content> content);
+    void displayHeader(std::string menuName);
+    std::vector<std::string> displayContent(std::vector<std::string> outputs, bool lastIsInput=false);
 private:
+    InputHandler inputHandler;
     Console console;
     std::string header, content, inputs;
 };
@@ -41,8 +32,8 @@ protected:
     std::string menuName;
     std::unordered_map<std::string,MenuBase*> submenus;
 
-    TerminationCode chooseSubmenu(std::string output);
-    TerminationCode fillForm(std::vector<std::string> outputs, std::vector<std::string> inputLabels, std::vector<std::string>& inputs);
+    TerminationCode chooseSubmenu(std::string& output);
+    TerminationCode fillForm(std::vector<std::string>& outputs, std::vector<std::string>& inputs);
     void wrongInput();
 };
 
