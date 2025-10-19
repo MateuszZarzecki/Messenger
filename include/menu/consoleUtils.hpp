@@ -8,40 +8,62 @@
 enum class ConsoleCode {
     NLINE,
     DEL_PREV_CHAR,DEL_LINE,CLEAR_PAGE,
-    LOCK,UNLOCK,
     TX_WHITE,TX_BLACK,TX_GREEN,TX_RED,TX_BLUE,
     BG_WHITE,BG_BLACK,BG_GREEN,BG_RED,BG_BLUE
 };
 
-//Nazwa OutputStream
-class Console {
-public:
-    Console();
-    Console(std::ostream& os);
+namespace ConsoleUtility {
     char getChar();
-    
-    template<typename T>
-    Console& operator<<(T& output) {
-        buffer << output;
-        flush();
-        return *this;
-    }
-    template<typename T>
-    Console& operator<<(T&& output) {
-        buffer << output;
-        flush();
-        return *this;
+}
+
+class ConsoleBase {
+protected:
+    std::ostream& consoleCodeHandling(std::ostream& os, ConsoleCode consoleCode);
+};
+
+class ConsoleString : public ConsoleBase{
+public:
+    ConsoleString() = default;
+
+    std::string stream() {
+        return oss.str();
     }
 
-    Console& operator<<(ConsoleCode consoleCode);
-    Console& operator<<(std::ostream& (*manip)(std::ostream&));
+    template<typename OutputType>
+    ConsoleString& operator<<(OutputType&& output) {
+        oss << output;
+        return *this;
+    }
+    template<typename OutputType>
+    ConsoleString& operator<<(OutputType& output){
+        oss << output;
+        return *this;
+    }
+    ConsoleString& operator<<(ConsoleCode consoleCode);
+    ConsoleString& operator<<(ConsoleString& consoleString);
 
 private:
-    std::ostringstream buffer;
-    std::ostream& sink;
-    std::pair<int,int> printableChars;
-
-    bool locked;
-
-    void flush();
+    std::ostringstream oss;
 };
+class Console : public ConsoleBase {
+public:
+    Console();
+
+    template<typename OutputType>
+    Console& operator<<(OutputType&& output) {
+        os << output;
+        return *this;
+    }
+    template<typename OutputType>
+    Console& operator<<(OutputType& output) {
+        os << output;
+        return *this;
+    }
+    Console& operator<<(ConsoleCode consoleCode);
+    Console& operator<<(ConsoleString& consoleString);
+private:
+    std::ostream& os;
+};
+
+
+

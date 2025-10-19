@@ -79,6 +79,10 @@ TerminationCode SignalHandler::manualSignal(std::vector<std::string> args) {
     return TerminationCode::NONE;
 }
 TerminationCode SignalHandler::backSignal(std::vector<std::string> args) {
+    if(MenuRepository::previousMenus.size() > 0) {
+        MenuRepository::current = MenuRepository::previousMenus.top();
+        MenuRepository::previousMenus.pop();
+    }
     return TerminationCode::NONE;
 }
 TerminationCode SignalHandler::textColorSignal(std::vector<std::string> args) {

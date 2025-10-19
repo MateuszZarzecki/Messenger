@@ -13,8 +13,7 @@ json APIBase::sendRequest(std::string api, json body) {
     try {
         http::Request request{getUrl(api)};
         http::Response response = request.send("POST", body.dump(), {{"Content-Type", "application/json"}});
-        // return json::parse(response.body.begin(), response.body.end());
-        std::cout << std::string{response.body.begin(), response.body.end()};
+        return json::parse(response.body.begin(), response.body.end());
     }
     catch (const std::exception& e) {
         std::cerr << "Request failed" << e.what() << std::endl;

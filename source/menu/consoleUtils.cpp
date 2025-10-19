@@ -1,46 +1,41 @@
 #include "consoleUtils.hpp"
 
-Console::Console()
-: sink(std::cout), locked(false) {}
-
-Console::Console(std::ostream& os)
-: sink(os), printableChars(32,126), locked(false) {}
-
-char Console::getChar() {
-    char character;
-    do {
-        character = std::cin.get();
-    } while(!(printableChars.first <= character && character <= printableChars.second));
-    return character;
+char ConsoleUtility::getChar() {
+    return std::cin.get();
 }
-Console& Console::operator<<(std::ostream& (*manip)(std::ostream&)) {
-    buffer << manip;
-    flush();
-    return *this;
-}
-Console& Console::operator<<(ConsoleCode consoleCode) {
+
+std::ostream& ConsoleBase::consoleCodeHandling(std::ostream& os, ConsoleCode consoleCode) {
     switch(consoleCode) {
-        case ConsoleCode::NLINE:
-            buffer << std::endl;
-            break;
-        case ConsoleCode::LOCK:
-            locked = true;
-            break;
-        case ConsoleCode::UNLOCK:
-            locked = false;
-            break;
-        case ConsoleCode::CLEAR_PAGE:
-            system("cls");
-        default: break;
-        //REST CODES
+    case ConsoleCode::NLINE:
+        os << std::endl;
+        break;
+    case ConsoleCode::CLEAR_PAGE:
+        os << "\033[2J\033[1;1H";
+        break;
+    default:
+        break;
     }
-    flush();
+    return os;
+}
+
+ConsoleString& ConsoleString::operator<<(ConsoleString& consoleString) {
+    oss << consoleString.stream();
     return *this;
 }
 
-void Console::flush() {
-    if(!locked) {
-        sink << buffer.str();
-        buffer.str("");
-    }
+ConsoleString& ConsoleString::operator<<(ConsoleCode consoleCode) {
+    consoleCodeHandling(oss, consoleCode);
+    return *this;
+}
+
+Console::Console() : os(std::cout) {}
+
+Console& Console::operator<<(ConsoleString& consoleString) {
+    os << consoleString.stream();
+    return *this;
+}
+
+Console& Console::operator<<(ConsoleCode consoleCode) {
+    consoleCodeHandling(os, consoleCode);
+    return *this;
 }

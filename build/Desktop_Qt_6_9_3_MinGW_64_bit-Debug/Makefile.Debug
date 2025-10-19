@@ -16,7 +16,7 @@ CXX           = g++
 DEFINES       = -DUNICODE -D_UNICODE -DWIN32 -DMINGW_HAS_SECURE_API=1 -DQT_QML_DEBUG
 CFLAGS        = -fno-keep-inline-dllexport -g -Wall -Wextra -Wextra $(DEFINES)
 CXXFLAGS      = -fno-keep-inline-dllexport -g -std=gnu++1z -Wall -Wextra -Wextra -fexceptions -mthreads $(DEFINES)
-INCPATH       = -I../../../MessengerQMake -I. -I../../include -I../../include/menu -I../../include/server -I../../include/shared -IC:/dev/libraries_cpp/HTTPRequest-master/include -IC:/dev/libraries_cpp/json-develop/include -IC:/Qt/6.9.3/mingw_64/mkspecs/win32-g++ 
+INCPATH       = -I../../../MessengerQMake -I. -I../../include -I../../include/menu -I../../include/server -I../../include/shared -IC:/dev/libraries_cpp/HTTPRequest-master/include -IC:/dev/libraries_cpp/json-nlohmann -IC:/Qt/6.9.3/mingw_64/mkspecs/win32-g++ 
 LINKER      =        g++
 LFLAGS        =        -Wl,-subsystem,console -mthreads
 LIBS        =        -lws2_32   
@@ -100,7 +100,8 @@ DIST          =  include/menu/authenticationMenu.hpp \
 		include/server/serverBase.hpp \
 		include/server/webUserApi.hpp \
 		include/shared/projectBase.hpp \
-		include/shared/sharedModels.hpp ..\..\messenger.cpp \
+		include/shared/sharedModels.hpp \
+		C:/dev/libraries_cpp/json-nlohmann/json.hpp ..\..\messenger.cpp \
 		..\..\source\menu\authenticationMenu.cpp \
 		..\..\source\menu\chatsMenu.cpp \
 		..\..\source\menu\consoleUtils.cpp \
@@ -164,11 +165,21 @@ compiler_clean:
 
 ####### Compile
 
-debug/messenger.o: ../../messenger.cpp ../../include/menu/menuBase.hpp \
+debug/messenger.o: ../../messenger.cpp ../../include/menu/authenticationMenu.hpp \
+		../../include/menu/menuBase.hpp \
 		../../include/shared/projectBase.hpp \
 		../../include/menu/input.hpp \
 		../../include/menu/signal.hpp \
-		../../include/menu/consoleUtils.hpp
+		../../include/menu/consoleUtils.hpp \
+		../../include/server/localUserApi.hpp \
+		../../include/server/serverBase.hpp \
+		../../include/shared/sharedModels.hpp \
+		C:/dev/libraries_cpp/HTTPRequest-master/include/HTTPRequest.hpp \
+		C:/dev/libraries_cpp/json-nlohmann/json.hpp \
+		../../include/menu/menuManager.hpp \
+		../../include/menu/chatMenu.hpp \
+		../../include/server/chatApi.hpp \
+		../../include/menu/mainMenu.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\messenger.o ..\..\messenger.cpp
 
 debug/authenticationMenu.o: ../../source/menu/authenticationMenu.cpp ../../include/menu/authenticationMenu.hpp \
@@ -181,52 +192,7 @@ debug/authenticationMenu.o: ../../source/menu/authenticationMenu.cpp ../../inclu
 		../../include/server/serverBase.hpp \
 		../../include/shared/sharedModels.hpp \
 		C:/dev/libraries_cpp/HTTPRequest-master/include/HTTPRequest.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/adl_serializer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/abi_macros.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/from_json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/exceptions.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/value_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/macro_scope.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/detected.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/void_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/thirdparty/hedley/hedley.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_escape.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/position_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/cpp_future.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/type_traits.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iterator_traits.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/call_std/begin.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/call_std/end.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/json_fwd.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_concat.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/identity_tag.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/std_fs.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/to_json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iteration_proxy.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_utils.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/byte_container_with_subtype.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/hash.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/binary_reader.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/input_adapters.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/json_sax.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/lexer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/is_sax.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/parser.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/internal_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/primitive_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iter_impl.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/json_reverse_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_custom_base_class.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_pointer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_ref.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/binary_writer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/output_adapters.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/serializer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/to_chars.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/ordered_map.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/macro_unscope.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/thirdparty/hedley/hedley_undef.hpp \
+		C:/dev/libraries_cpp/json-nlohmann/json.hpp \
 		../../include/menu/mainMenu.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\authenticationMenu.o ..\..\source\menu\authenticationMenu.cpp
 
@@ -240,52 +206,7 @@ debug/chatsMenu.o: ../../source/menu/chatsMenu.cpp ../../include/menu/chatMenu.h
 		../../include/server/serverBase.hpp \
 		../../include/shared/sharedModels.hpp \
 		C:/dev/libraries_cpp/HTTPRequest-master/include/HTTPRequest.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/adl_serializer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/abi_macros.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/from_json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/exceptions.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/value_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/macro_scope.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/detected.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/void_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/thirdparty/hedley/hedley.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_escape.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/position_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/cpp_future.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/type_traits.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iterator_traits.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/call_std/begin.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/call_std/end.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/json_fwd.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_concat.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/identity_tag.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/std_fs.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/to_json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iteration_proxy.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_utils.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/byte_container_with_subtype.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/hash.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/binary_reader.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/input_adapters.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/json_sax.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/lexer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/is_sax.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/parser.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/internal_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/primitive_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iter_impl.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/json_reverse_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_custom_base_class.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_pointer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_ref.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/binary_writer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/output_adapters.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/serializer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/to_chars.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/ordered_map.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/macro_unscope.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/thirdparty/hedley/hedley_undef.hpp
+		C:/dev/libraries_cpp/json-nlohmann/json.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\chatsMenu.o ..\..\source\menu\chatsMenu.cpp
 
 debug/consoleUtils.o: ../../source/menu/consoleUtils.cpp ../../include/menu/consoleUtils.hpp
@@ -294,8 +215,7 @@ debug/consoleUtils.o: ../../source/menu/consoleUtils.cpp ../../include/menu/cons
 debug/input.o: ../../source/menu/input.cpp ../../include/menu/input.hpp \
 		../../include/shared/projectBase.hpp \
 		../../include/menu/signal.hpp \
-		../../include/menu/consoleUtils.hpp \
-		../../include/menu/menuBase.hpp
+		../../include/menu/consoleUtils.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\input.o ..\..\source\menu\input.cpp
 
 debug/mainMenu.o: ../../source/menu/mainMenu.cpp ../../include/menu/mainMenu.hpp \
@@ -308,52 +228,7 @@ debug/mainMenu.o: ../../source/menu/mainMenu.cpp ../../include/menu/mainMenu.hpp
 		../../include/server/serverBase.hpp \
 		../../include/shared/sharedModels.hpp \
 		C:/dev/libraries_cpp/HTTPRequest-master/include/HTTPRequest.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/adl_serializer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/abi_macros.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/from_json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/exceptions.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/value_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/macro_scope.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/detected.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/void_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/thirdparty/hedley/hedley.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_escape.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/position_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/cpp_future.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/type_traits.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iterator_traits.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/call_std/begin.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/call_std/end.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/json_fwd.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_concat.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/identity_tag.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/std_fs.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/to_json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iteration_proxy.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_utils.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/byte_container_with_subtype.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/hash.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/binary_reader.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/input_adapters.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/json_sax.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/lexer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/is_sax.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/parser.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/internal_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/primitive_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iter_impl.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/json_reverse_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_custom_base_class.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_pointer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_ref.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/binary_writer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/output_adapters.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/serializer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/to_chars.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/ordered_map.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/macro_unscope.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/thirdparty/hedley/hedley_undef.hpp \
+		C:/dev/libraries_cpp/json-nlohmann/json.hpp \
 		../../include/menu/chatMenu.hpp \
 		../../include/server/chatApi.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\mainMenu.o ..\..\source\menu\mainMenu.cpp
@@ -376,52 +251,7 @@ debug/menuManager.o: ../../source/menu/menuManager.cpp ../../include/menu/menuMa
 		../../include/server/serverBase.hpp \
 		../../include/shared/sharedModels.hpp \
 		C:/dev/libraries_cpp/HTTPRequest-master/include/HTTPRequest.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/adl_serializer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/abi_macros.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/from_json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/exceptions.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/value_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/macro_scope.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/detected.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/void_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/thirdparty/hedley/hedley.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_escape.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/position_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/cpp_future.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/type_traits.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iterator_traits.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/call_std/begin.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/call_std/end.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/json_fwd.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_concat.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/identity_tag.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/std_fs.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/to_json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iteration_proxy.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_utils.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/byte_container_with_subtype.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/hash.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/binary_reader.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/input_adapters.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/json_sax.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/lexer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/is_sax.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/parser.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/internal_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/primitive_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iter_impl.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/json_reverse_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_custom_base_class.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_pointer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_ref.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/binary_writer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/output_adapters.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/serializer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/to_chars.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/ordered_map.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/macro_unscope.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/thirdparty/hedley/hedley_undef.hpp \
+		C:/dev/libraries_cpp/json-nlohmann/json.hpp \
 		../../include/menu/chatMenu.hpp \
 		../../include/server/chatApi.hpp \
 		../../include/menu/mainMenu.hpp
@@ -438,308 +268,38 @@ debug/chatApi.o: ../../source/server/chatApi.cpp ../../include/server/chatApi.hp
 		../../include/server/serverBase.hpp \
 		../../include/shared/sharedModels.hpp \
 		C:/dev/libraries_cpp/HTTPRequest-master/include/HTTPRequest.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/adl_serializer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/abi_macros.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/from_json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/exceptions.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/value_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/macro_scope.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/detected.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/void_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/thirdparty/hedley/hedley.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_escape.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/position_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/cpp_future.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/type_traits.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iterator_traits.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/call_std/begin.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/call_std/end.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/json_fwd.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_concat.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/identity_tag.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/std_fs.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/to_json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iteration_proxy.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_utils.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/byte_container_with_subtype.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/hash.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/binary_reader.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/input_adapters.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/json_sax.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/lexer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/is_sax.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/parser.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/internal_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/primitive_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iter_impl.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/json_reverse_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_custom_base_class.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_pointer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_ref.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/binary_writer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/output_adapters.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/serializer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/to_chars.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/ordered_map.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/macro_unscope.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/thirdparty/hedley/hedley_undef.hpp
+		C:/dev/libraries_cpp/json-nlohmann/json.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\chatApi.o ..\..\source\server\chatApi.cpp
 
 debug/crypto.o: ../../source/server/crypto.cpp ../../include/server/crypto.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/adl_serializer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/abi_macros.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/from_json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/exceptions.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/value_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/macro_scope.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/detected.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/void_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/thirdparty/hedley/hedley.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_escape.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/position_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/cpp_future.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/type_traits.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iterator_traits.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/call_std/begin.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/call_std/end.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/json_fwd.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_concat.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/identity_tag.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/std_fs.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/to_json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iteration_proxy.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_utils.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/byte_container_with_subtype.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/hash.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/binary_reader.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/input_adapters.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/json_sax.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/lexer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/is_sax.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/parser.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/internal_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/primitive_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iter_impl.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/json_reverse_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_custom_base_class.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_pointer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_ref.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/binary_writer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/output_adapters.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/serializer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/to_chars.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/ordered_map.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/macro_unscope.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/thirdparty/hedley/hedley_undef.hpp
+		C:/dev/libraries_cpp/json-nlohmann/json.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\crypto.o ..\..\source\server\crypto.cpp
 
 debug/friendApi.o: ../../source/server/friendApi.cpp ../../include/server/friendApi.hpp \
 		../../include/server/serverBase.hpp \
 		../../include/shared/sharedModels.hpp \
 		C:/dev/libraries_cpp/HTTPRequest-master/include/HTTPRequest.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/adl_serializer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/abi_macros.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/from_json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/exceptions.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/value_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/macro_scope.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/detected.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/void_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/thirdparty/hedley/hedley.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_escape.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/position_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/cpp_future.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/type_traits.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iterator_traits.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/call_std/begin.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/call_std/end.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/json_fwd.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_concat.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/identity_tag.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/std_fs.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/to_json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iteration_proxy.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_utils.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/byte_container_with_subtype.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/hash.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/binary_reader.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/input_adapters.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/json_sax.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/lexer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/is_sax.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/parser.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/internal_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/primitive_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iter_impl.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/json_reverse_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_custom_base_class.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_pointer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_ref.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/binary_writer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/output_adapters.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/serializer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/to_chars.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/ordered_map.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/macro_unscope.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/thirdparty/hedley/hedley_undef.hpp
+		C:/dev/libraries_cpp/json-nlohmann/json.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\friendApi.o ..\..\source\server\friendApi.cpp
 
 debug/localUserApi.o: ../../source/server/localUserApi.cpp ../../include/server/localUserApi.hpp \
 		../../include/server/serverBase.hpp \
 		../../include/shared/sharedModels.hpp \
 		C:/dev/libraries_cpp/HTTPRequest-master/include/HTTPRequest.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/adl_serializer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/abi_macros.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/from_json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/exceptions.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/value_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/macro_scope.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/detected.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/void_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/thirdparty/hedley/hedley.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_escape.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/position_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/cpp_future.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/type_traits.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iterator_traits.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/call_std/begin.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/call_std/end.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/json_fwd.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_concat.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/identity_tag.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/std_fs.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/to_json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iteration_proxy.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_utils.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/byte_container_with_subtype.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/hash.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/binary_reader.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/input_adapters.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/json_sax.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/lexer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/is_sax.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/parser.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/internal_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/primitive_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iter_impl.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/json_reverse_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_custom_base_class.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_pointer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_ref.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/binary_writer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/output_adapters.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/serializer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/to_chars.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/ordered_map.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/macro_unscope.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/thirdparty/hedley/hedley_undef.hpp
+		C:/dev/libraries_cpp/json-nlohmann/json.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\localUserApi.o ..\..\source\server\localUserApi.cpp
 
 debug/serverBase.o: ../../source/server/serverBase.cpp ../../include/server/serverBase.hpp \
 		../../include/shared/sharedModels.hpp \
 		C:/dev/libraries_cpp/HTTPRequest-master/include/HTTPRequest.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/adl_serializer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/abi_macros.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/from_json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/exceptions.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/value_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/macro_scope.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/detected.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/void_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/thirdparty/hedley/hedley.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_escape.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/position_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/cpp_future.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/type_traits.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iterator_traits.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/call_std/begin.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/call_std/end.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/json_fwd.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_concat.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/identity_tag.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/std_fs.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/to_json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iteration_proxy.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_utils.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/byte_container_with_subtype.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/hash.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/binary_reader.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/input_adapters.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/json_sax.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/lexer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/is_sax.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/parser.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/internal_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/primitive_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iter_impl.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/json_reverse_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_custom_base_class.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_pointer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_ref.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/binary_writer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/output_adapters.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/serializer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/to_chars.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/ordered_map.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/macro_unscope.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/thirdparty/hedley/hedley_undef.hpp
+		C:/dev/libraries_cpp/json-nlohmann/json.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\serverBase.o ..\..\source\server\serverBase.cpp
 
 debug/webUserApi.o: ../../source/server/webUserApi.cpp ../../include/server/webUserApi.hpp \
 		../../include/server/serverBase.hpp \
 		../../include/shared/sharedModels.hpp \
 		C:/dev/libraries_cpp/HTTPRequest-master/include/HTTPRequest.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/adl_serializer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/abi_macros.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/from_json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/exceptions.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/value_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/macro_scope.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/detected.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/void_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/thirdparty/hedley/hedley.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_escape.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/position_t.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/cpp_future.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/type_traits.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iterator_traits.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/call_std/begin.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/call_std/end.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/json_fwd.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_concat.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/identity_tag.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/std_fs.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/to_json.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iteration_proxy.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/string_utils.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/byte_container_with_subtype.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/hash.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/binary_reader.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/input_adapters.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/json_sax.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/lexer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/meta/is_sax.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/input/parser.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/internal_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/primitive_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/iter_impl.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/iterators/json_reverse_iterator.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_custom_base_class.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_pointer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/json_ref.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/binary_writer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/output_adapters.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/output/serializer.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/conversions/to_chars.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/ordered_map.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/detail/macro_unscope.hpp \
-		C:/dev/libraries_cpp/json-develop/include/nlohmann/thirdparty/hedley/hedley_undef.hpp
+		C:/dev/libraries_cpp/json-nlohmann/json.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\webUserApi.o ..\..\source\server\webUserApi.cpp
 
 debug/projectBase.o: ../../source/shared/projectBase.cpp ../../include/shared/projectBase.hpp

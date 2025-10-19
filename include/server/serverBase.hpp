@@ -6,7 +6,7 @@
 
 #include "sharedModels.hpp"
 #include <HTTPRequest.hpp>
-#include <nlohmann/json.hpp>
+#include <json.hpp>
 using json = nlohmann::json;
  
 class APIBase {

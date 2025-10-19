@@ -16,17 +16,18 @@ void LocalUserAPI::login(std::string identifier, std::string password) {
     //     throw; // na czas debugowania NIE tłum — pozwól zobaczyć call stack
     // }
 
-    try{
-        std::string api = "/messenger/api/user/login";
-        json body = {{"serverConn", {{"username", identifier}, {"password", password}}}};
-        std::cout << body.dump(2);
-        json response = sendRequest(api, body);
+    std::string api = "/messenger/api/user/login";
+    json body = {{"serverConn", {{"username", identifier}, {"password", password}}}};
+    std::cout << body.dump(2);
+    json response = sendRequest(api, body);
 
-        std::cout << response.dump(2);
-    }
-    catch(...) {
-        std::cout << "json error";
-    }
+    std::cout << response.dump(2);
+    // try{
+
+    // }
+    // catch(...) {
+    //     std::cout << "json error";
+    // }
 
     // if(response["statusCode"])
     // sessionId = response["sessionId"];

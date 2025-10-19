@@ -1,9 +1,9 @@
 #pragma once
 #include <iostream>
 #include <sstream>
-#include <iomanip>  
+#include <iomanip>
 
-#include "nlohmann/json.hpp"
+#include "json.hpp"
 using json = nlohmann::json;
 
 class Crypto {

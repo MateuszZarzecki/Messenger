@@ -4,7 +4,6 @@
 void LoginMenu::init() {
     menuName = "LOGIN";
     submenus = {{"",new MainMenu()}};
-    MenuRepository::menus[menuName] = this;
     
     std::vector<std::string> inputs = {"identifier", "password"};
     std::vector<std::string> inputLabels = {
@@ -17,7 +16,6 @@ void LoginMenu::init() {
 void SignUpMenu::init() {
     menuName = "SIGN UP";
     submenus = {{"",new MainMenu()}};
-    MenuRepository::menus[menuName] = this;
 
     std::vector<std::string> inputs = {"username", "password", "repeatedPassword", "email", "phoneNumber"};
     std::vector<std::string> inputLabels = {
@@ -33,7 +31,6 @@ void SignUpMenu::init() {
 void AuthenticationMenu::init() {
     menuName = "AUTHENTICATION";
     submenus = {{"1", new LoginMenu()}, {"2", new SignUpMenu()}};
-    MenuRepository::menus[menuName] = this;
 
     std::string output = 
         "1. Login \n"

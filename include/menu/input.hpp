@@ -17,6 +17,6 @@ public:
 
     std::pair<std::string,TerminationCode> getInput(bool multiLine = false);
 private:
-    Console console;
+    //Console console;
     SignalHandler signalHandler;
 };

@@ -7,13 +7,14 @@ CONFIG -= qt
 
 SOURCES += $$files(*.cpp,true)
 
-HEADERS += $$files(include/*.h*,true)
+HEADERS += $$files(include/*.h*,true) \
+           "C:/dev/libraries_cpp/json-nlohmann/json.hpp"
 
 INCLUDEPATH += $$PWD/include \
            $$PWD/include/menu \
            $$PWD/include/server\
            $$PWD/include/shared \
            "C:/dev/libraries_cpp/HTTPRequest-master/include" \
-           "C:/dev/libraries_cpp/json-develop/include"
+           "C:/dev/libraries_cpp/json-nlohmann"
 
 LIBS += -lws2_32

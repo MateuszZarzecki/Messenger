@@ -4,12 +4,9 @@
 
 
 TerminationCode MenuBase::chooseSubmenu(std::string output) {
-    console << ConsoleCode::CLEAR_PAGE;
-
-    MenuRepository::menuDisplay.clear();
-    MenuRepository::menuDisplay.addHeader(menuName);
-    MenuRepository::menuDisplay.addContent(output);
-    MenuRepository::menuDisplay.display();
+    menuDisplay.clear();
+    menuDisplay.addHeader(menuName);
+    menuDisplay.addContent(output);
 
     console << "(i) Choose Menu: ";
 
@@ -17,6 +14,7 @@ TerminationCode MenuBase::chooseSubmenu(std::string output) {
     
     if(inputLine.second != TerminationCode::QUIT) {
         if(submenus.count(inputLine.first)) {
+            MenuRepository::previousMenus.push(MenuRepository::current);
             MenuRepository::current = submenus[inputLine.first];
         } else {
             wrongInput();
@@ -25,18 +23,15 @@ TerminationCode MenuBase::chooseSubmenu(std::string output) {
     } return inputLine.second;
 }
 TerminationCode MenuBase::fillForm(std::vector<std::string> outputs, std::vector<std::string> inputLabels, std::vector<std::string>& inputs) {
-    console << ConsoleCode::CLEAR_PAGE;
-
-    MenuRepository::menuDisplay.clear();
-    MenuRepository::menuDisplay.addHeader(menuName);
-    MenuRepository::menuDisplay.display();
+    menuDisplay.clear();
+    menuDisplay.addHeader(menuName);
 
     for(std::string outputLine : outputs) {
         console << outputLine << ConsoleCode::NLINE;
     }
 
     std::pair<std::string, TerminationCode> inputLine;
-    
+
     for(int i=0; i<(int)inputLabels.size(); i++) {
         console << inputLabels[i];
         inputLine = inputHandler.getInput();
@@ -49,9 +44,8 @@ TerminationCode MenuBase::fillForm(std::vector<std::string> outputs, std::vector
     return inputLine.second;
 }
 void MenuBase::wrongInput() {
-    MenuRepository::menuDisplay.clear();
-    MenuRepository::menuDisplay.addContent("\n\nWrong input. Try again or see [:m;]");
-    MenuRepository::menuDisplay.display();
+    menuDisplay.clear();
+    menuDisplay.addContent("\n\nWrong input. Try again or see [:m;]");
 }
 
 void MenuDisplay::addHeader(std::string menuName) {
@@ -72,9 +66,5 @@ void MenuDisplay::addContent(std::string newContent) {
 }
 void MenuDisplay::clear() {
     header = content = "";
+    console << ConsoleCode::CLEAR_PAGE;
 }
-void MenuDisplay::display() {
-    console << header << content << ConsoleCode::NLINE;
-}
-//MenuBase* MenuRepository::current = nullptr;
-
