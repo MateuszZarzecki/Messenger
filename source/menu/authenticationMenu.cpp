@@ -1,15 +1,20 @@
 #include "authenticationMenu.hpp"
 #include "mainMenu.hpp"
 
+TerminationCode globalTermiantionCode = TerminationCode::NONE;
+
 void LoginMenu::init() {
     menuName = "LOGIN";
     submenus = {{"",new MainMenu()}};
     
+    // -----
+
     std::vector<std::string> inputs = {"identifier", "password"};
     std::vector<std::string> outputs = {
         "(i) Username, Email or Phone number: ",
         "(i) Password: ",
     };
+
     if(fillForm(outputs, inputs) == TerminationCode::QUIT) return;
     localUserApi.login(inputs[0], inputs[1]);
 }
