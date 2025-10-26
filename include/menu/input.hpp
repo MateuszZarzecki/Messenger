@@ -8,15 +8,15 @@
 #include <functional>
 
 #include "projectBase.hpp"
-#include "signal.hpp"
+#include "commands.hpp"
 #include "consoleUtils.hpp"
 
 class InputHandler {
 public:
     InputHandler();
 
-    std::pair<std::string,TerminationCode> getInput(bool multiLine = false);
+    ReturnData<S> getInput(bool multiLine = false);
 private:
-    //Console console;
-    SignalHandler signalHandler;
+    Console console;
+    CommandHandler commandHandler;
 };

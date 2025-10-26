@@ -15,6 +15,8 @@ void LoginMenu::init() {
         "(i) Password: ",
     };
 
+
+
     if(fillForm(outputs, inputs) == TerminationCode::QUIT) return;
     localUserApi.login(inputs[0], inputs[1]);
 }
@@ -41,7 +43,7 @@ void AuthenticationMenu::init() {
         "1. Login \n"
         "2. Register \n";
 
-    chooseSubmenu(output);
+    if(chooseSubmenu(output) == TerminationCode::QUIT) return;
 }
 void VerifyEmailMenu::init() {}
 

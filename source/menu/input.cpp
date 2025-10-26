@@ -2,7 +2,7 @@
 
 InputHandler::InputHandler() {}
 
-std::pair<std::string,TerminationCode> InputHandler::getInput(bool multiLine){
+ReturnData<S> InputHandler::getInput(bool multiLine){
     std::string message = "", inputLine = "";
     char character;
 
@@ -16,11 +16,10 @@ std::pair<std::string,TerminationCode> InputHandler::getInput(bool multiLine){
                 complitedMessage = message + inputLine;
 
                 if(character == '\n') {
-                    return {complitedMessage.substr(0,complitedMessage.size()-1), TerminationCode::NONE};
+                    return ReturnData<S>(complitedMessage.substr(0,complitedMessage.size()-1));
                 }
-
-                // signalHandler.handleSignals(message);
-                // signalHandler.unescapePrefixes(message);
+                commandHandler.handleCommands(complitedMessage);
+                commandHandler.unescapePrefixes(complitedMessage);
             }
         }
         message += "\n" + inputLine;
@@ -37,13 +36,13 @@ std::pair<std::string,TerminationCode> InputHandler::getInput(bool multiLine){
             //shirt enter new line
             //\n finish
             if(character == '\n') {
-                return {complitedMessage.substr(0,complitedMessage.size()-1), TerminationCode::NONE};
+                return ReturnData<S>(complitedMessage.substr(0,complitedMessage.size()-1));
             }
         }
     }
     //goto Finish;
-    checkSignal(input);
-    current = ...
+    // checkSignal(input);
+    // current = ...
 
-    return {};
+    return ReturnData<S>();
 }    

@@ -1,12 +1,12 @@
 release/messenger.o
 release/authenticationMenu.o
 release/chatsMenu.o
+release/commands.o
 release/consoleUtils.o
 release/input.o
 release/mainMenu.o
 release/menuBase.o
 release/menuManager.o
-release/signal.o
 release/chatApi.o
 release/crypto.o
 release/friendApi.o

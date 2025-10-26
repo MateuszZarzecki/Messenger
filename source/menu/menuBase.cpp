@@ -27,16 +27,15 @@ TerminationCode MenuBase::fillForm(std::vector<std::string>& outputs, std::vecto
     if(inputs.empty()) {
         return TerminationCode::QUIT;
     }
-
     MenuRepository::previousMenus.push(MenuRepository::current);
     MenuRepository::current = submenus[""];
+
     return TerminationCode::NONE;
 }
 void MenuBase::wrongInput() {
     menuDisplay.clear();
     menuDisplay.displayContent({"\n\nWrong input. Try again or see [:m;]"});
 }
-
 void MenuDisplay::displayHeader(std::string menuName) {
         const unsigned int MENU_HEADER_MAX_SIZE = 49;
         unsigned int centerPos = (MENU_HEADER_MAX_SIZE - menuName.size()) / 2;
@@ -52,16 +51,16 @@ void MenuDisplay::displayHeader(std::string menuName) {
 }
 std::vector<std::string> MenuDisplay::displayContent(std::vector<std::string> outputs, bool lastIsInput) {
     std::vector<std::string> inputs;
-    std::pair<std::string, TerminationCode> inputLine;
+    ReturnData<S> inputLine;
 
     for(int i=0;i<outputs.size();i++) {
         console << outputs[i];
         inputLine = inputHandler.getInput();
 
-        if(inputLine.second == TerminationCode::QUIT) {
+        if(inputLine.tCode == TerminationCode::QUIT) {
             return {};
         }
-        inputs.push_back(inputLine.first);
+        inputs.push_back(inputLine.data);
         console << ConsoleCode::NLINE;
     }
     return inputs;

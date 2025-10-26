@@ -1,12 +1,12 @@
 debug/messenger.o
 debug/authenticationMenu.o
 debug/chatsMenu.o
+debug/commands.o
 debug/consoleUtils.o
 debug/input.o
 debug/mainMenu.o
 debug/menuBase.o
 debug/menuManager.o
-debug/signal.o
 debug/chatApi.o
 debug/crypto.o
 debug/friendApi.o
