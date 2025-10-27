@@ -5,7 +5,7 @@
 CommandHandler::CommandHandler() {
 
     prefix = ':'; postfix = ';'; paramChar = '=';
-    signalTerminations = {
+    commandsTerminations = {
         {CommandCode::NONE, TerminationCode::NONE},
         {CommandCode::MANUAL, TerminationCode::NONE},
         {CommandCode::TEXTCOLOR, TerminationCode::NONE},
@@ -14,7 +14,7 @@ CommandHandler::CommandHandler() {
         {CommandCode::HOME, TerminationCode::QUIT},
         {CommandCode::BACK, TerminationCode::QUIT}
     };
-    signals = {
+    commands = {
         {"f", CommandCode::FINISH}, {"finish", CommandCode::FINISH},
         {"q", CommandCode::QUIT}, {"quit", CommandCode::QUIT},
         {"h", CommandCode::HOME}, {"home", CommandCode::HOME},
@@ -27,37 +27,48 @@ TerminationCode CommandHandler::handleCommands(std::string input) {
     //asdnbc::c;:c=:c=white;
     //asdnbcc;:c=:c=white;
 
-    //json as signals
+    //DONT USE SUBSTR - ISSUE OF POSITIONING CHARS
+    //USE FIND WITH POS ARGUMENT
+
     TerminationCode terminationCode = TerminationCode::NONE;
-    std::vector<std::tuple<CommandCode,size_t,std::string>> signalsFound;
-    for(int i=1; i<input.size(); i++) {
+    std::vector<std::tuple<CommandCode,size_t,std::string>> commandsFound;
+    for(size_t i=1; i<input.size(); i++) {
         if(input[i-1] == prefix && input[i] == prefix) {
             input.erase(i-1,2);
         }
     }
-    for(auto [key,value] : signals) {
-        size_t signalPrefixPos=0, signalPostfixPos=0;
-        std::string parameter="";
+    for(auto [key,code] : commands) {
+        size_t commandPos=0,afterCommandNamePos=0,postfixPos=0;
         while(true) {
-            signalPrefixPos = input.substr(signalPrefixPos).find(prefix+key+paramChar); 
-            if(signalPrefixPos != std::string::npos) {
-                signalPostfixPos = input.substr(signalPrefixPos+3).find(postfix);
-                if(signalPostfixPos != std::string::npos) {
-                    parameter = input.substr(signalPrefixPos+3,signalPostfixPos);
-                    signalsFound.push_back({value,signalPrefixPos,parameter});
+            std::string parameter="";
+
+            commandPos = input.substr(commandPos).find(prefix+key);
+            if(commandPos != std::string::npos) {
+                afterCommandNamePos = commandPos+key.size()+1;
+                postfixPos = input.substr(afterCommandNamePos).find(';') + afterCommandNamePos;
+                if(postfixPos != std::string::npos) {
+                    if(input[afterCommandNamePos] == '=') {
+                        parameter = input.substr(afterCommandNamePos+1,postfixPos-afterCommandNamePos-1);
+                    }
+                    else { break; }
+
+                    commandsFound.push_back({code,commandPos,parameter});
+                    commandPos++;
                 }
+                else { break; }
             }
+            else { break; }
         }
     }
-    auto comparator = [](std::tuple<CommandCode,size_t,std::string> signal_1, std::tuple<CommandCode,size_t,std::string> signal_2){return std::get<1>(signal_1) < std::get<1>(signal_2);};
-    std::sort(signalsFound.begin(), signalsFound.end(), comparator);
-    for(auto signal : signalsFound) {
-        terminationCode = (this->*signalResponses[std::get<0>(signal)])({std::get<1>(signal),std::get<2>(signal)});
-        if(terminationCode == TerminationCode::FAILURE) {
-            return TerminationCode::FAILURE;
-        }
-    }
-    return terminationCode;
+    // auto comparator = [](std::tuple<CommandCode,size_t,std::string> signal_1, std::tuple<CommandCode,size_t,std::string> signal_2){return std::get<1>(signal_1) < std::get<1>(signal_2);};
+    // std::sort(commandsFound.begin(), commandsFound.end(), comparator);
+    // for(auto command : commandsFound) {
+    //     terminationCode = (this->*commandsResponses[std::get<0>(command)])({std::get<1>(command),std::get<2>(command)});
+    //     if(terminationCode == TerminationCode::QUIT || terminationCode == TerminationCode::FINISH) {
+    //         break;
+    //     }
+    // }
+    return TerminationCode::NONE;
 }
 std::string CommandHandler::unescapePrefixes(std::string input) {
     for(int i=1; i<input.size(); i++) {
