@@ -66,6 +66,7 @@ public:
     DataType data;
     TerminationCode tCode;
 };
+
 namespace ApplicationData {
     extern std::string projectName;
 }

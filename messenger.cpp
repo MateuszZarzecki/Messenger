@@ -10,14 +10,17 @@
 #include <sstream>
 
 #include <limits>
-
+#include "debug.hpp"
 
 //Termination Codes can be outputed for debug reasons
 
 int main() {
-    CommandHandler ch;
-    ch.handleCommands("c::c;:tc=saf:tc=white;");
+
     // MenuManager menuManager;
     // menuManager.display();
+
+    CommandHandler ch;
+    Debug::terminationString(ch.handleCommands(":tc:b;"));
+
     return 0;
 }

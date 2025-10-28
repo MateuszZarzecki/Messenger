@@ -5,10 +5,9 @@ CONFIG += debug
 CONFIG -= app_bundle
 CONFIG -= qt
 
-SOURCES += $$files(*.cpp,true)
+SOURCES += $$files(*.cpp,true) \
 
-HEADERS += $$files(include/*.h*,true) \
-           "C:/dev/libraries_cpp/json-nlohmann/json.hpp"
+HEADERS += $$files(include/*.h*,true)
 
 INCLUDEPATH += $$PWD/include \
            $$PWD/include/menu \

@@ -46,8 +46,9 @@ void MenuDisplay::displayHeader(std::string menuName) {
         }
         menuHeaderCentered.insert(centerPos, menuName);
         
-       header +=  "| Messenger | BACK[:b;] - QUIT[:q;] - HOME[:h;] - MANUAL[:m;] |\n"
-                  "|___________|"+               menuHeaderCentered            +"|\n\n";
+        header +=  "| Messenger | BACK[:b;] - QUIT[:q;] - HOME[:h;] - MANUAL[:m;] |\n"
+                  "|___________|"+               menuHeaderCentered            +"|\n";
+        console << header << ConsoleCode::NLINE;
 }
 std::vector<std::string> MenuDisplay::displayContent(std::vector<std::string> outputs, bool lastIsInput) {
     std::vector<std::string> inputs;
