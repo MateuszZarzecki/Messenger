@@ -10,13 +10,7 @@ MenuManager::~MenuManager() {
     // }
 }
 void MenuManager::display() {
-
     while(MenuRepository::current) {
         MenuRepository::current->init();
-
-        // if(sygnal == ) {
-        //     return;
-        // }
-        // MenuRepository::current->loop();
     }
 } 

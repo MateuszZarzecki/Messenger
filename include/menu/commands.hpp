@@ -22,14 +22,14 @@ private:
     //Console console;
 
     char prefix, postfix, paramChar;
-    std::unordered_map<std::string, CommandCode> signals;
-    std::unordered_map<CommandCode, TerminationCode> signalTerminations;
-    std::unordered_map<CommandCode, TerminationCode(CommandHandler::*)(std::vector<std::string>)> signalResponses;
+    std::unordered_map<std::string, CommandCode> commands;
+    std::unordered_map<CommandCode, TerminationCode> commandsTerminations;
+    std::unordered_map<CommandCode, TerminationCode(CommandHandler::*)(std::vector<std::string>)> commandsResponses;
 
-    // TerminationCode finishSignal(std::vector<std::string> args);
-    // TerminationCode quitSignal(std::vector<std::string> args);
-    // TerminationCode homeSignal(std::vector<std::string> args);
-    // TerminationCode manualSignal(std::vector<std::string> args);
-    // TerminationCode backSignal(std::vector<std::string> args);
-    // TerminationCode textColorSignal(std::vector<std::string> args);
+    TerminationCode finishCommand(std::vector<std::string> args);
+    TerminationCode quitCommand(std::vector<std::string> args);
+    TerminationCode homeCommand(std::vector<std::string> args);
+    TerminationCode manualCommand(std::vector<std::string> args);
+    TerminationCode backCommand(std::vector<std::string> args);
+    TerminationCode textColorCommand(std::vector<std::string> args);
 };

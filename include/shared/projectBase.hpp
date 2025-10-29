@@ -31,6 +31,11 @@ struct Triplet {
         second = data2;
         third = data3;
     }
+    Triplet() {
+        first = DataType1();
+        second = DataType2();
+        third = DataType3();
+    }
 
     DataType1 first;
     DataType2 second;
@@ -41,6 +46,7 @@ using T = Triplet<DataType1,DataType2,DataType3>;
 
 template<typename DataType>
 struct ReturnData {
+public:
     ReturnData(DataType data, TerminationCode terminationCode) {
         this->data = data;
         tCode = terminationCode;
@@ -57,10 +63,10 @@ struct ReturnData {
         this->data = DataType();
         tCode = TerminationCode::NONE;
     }
-
     DataType data;
     TerminationCode tCode;
 };
+
 namespace ApplicationData {
     extern std::string projectName;
 }

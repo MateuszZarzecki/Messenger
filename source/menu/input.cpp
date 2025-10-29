@@ -40,9 +40,5 @@ ReturnData<S> InputHandler::getInput(bool multiLine){
             }
         }
     }
-    //goto Finish;
-    // checkSignal(input);
-    // current = ...
-
     return ReturnData<S>();
 }    
