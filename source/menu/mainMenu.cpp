@@ -12,4 +12,3 @@ void MainMenu::init() {
         "4. Settings \n";
     chooseSubmenu(output);
 }  
-

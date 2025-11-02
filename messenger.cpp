@@ -12,15 +12,19 @@
 #include <limits>
 #include "debug.hpp"
 
-//Termination Codes can be outputed for debug reasons
-
 int main() {
 
-    // MenuManager menuManager;
-    // menuManager.display();
+    // std::cout << int('\n');
+    // InputHandler ih;
+    // ReturnData<S> input = ih.getInput();
 
-    CommandHandler ch;
-    Debug::terminationString(ch.handleCommands(":tc:b;"));
-
+    // Debug::terminationString(input.tCode);
+    // std::cout << input.data;
+    if(getche() == '\r\n') std::cout << "ENTER";
+    std::cout << int('\r\n');
+    r - 10
+    n - 13
+    rn - 33
+    rn - 38 ASCII
     return 0;
 }

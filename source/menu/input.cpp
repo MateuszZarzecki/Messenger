@@ -3,6 +3,7 @@
 InputHandler::InputHandler() {}
 
 ReturnData<S> InputHandler::getInput(bool multiLine){
+    TerminationCode commandTerminationCode = TerminationCode::NONE;
     std::string message = "", inputLine = "";
     char character;
 
@@ -11,34 +12,22 @@ ReturnData<S> InputHandler::getInput(bool multiLine){
             {
                 std::string complitedMessage;
 
-                character = std::cin.get();
+                character = ConsoleUtility::getChar();
                 inputLine += character;
                 complitedMessage = message + inputLine;
 
-                if(character == '\n') {
+                if(character == '\r') {
                     return ReturnData<S>(complitedMessage.substr(0,complitedMessage.size()-1));
                 }
-                commandHandler.handleCommands(complitedMessage);
+                commandTerminationCode = commandHandler.handleCommands(complitedMessage);
+                if(commandTerminationCode != TerminationCode::NONE) {
+                    return commandTerminationCode;
+                }
                 commandHandler.unescapePrefixes(complitedMessage);
             }
         }
         message += "\n" + inputLine;
     } while(multiLine);
 
-    while(true) {
-        {
-            std::string complitedMessage;
-
-            character = std::cin.get();
-            inputLine += character;
-            complitedMessage = message + inputLine;
-
-            //shirt enter new line
-            //\n finish
-            if(character == '\n') {
-                return ReturnData<S>(complitedMessage.substr(0,complitedMessage.size()-1));
-            }
-        }
-    }
     return ReturnData<S>();
 }    

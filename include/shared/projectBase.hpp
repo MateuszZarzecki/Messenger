@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <map>
 
-enum class TerminationCode { NONE=-1,COMPLETE,SKIP,FINISH,QUIT,FAILURE };
+enum class TerminationCode { NONE=-1,COMPLETE,SKIP,FINISH,PARTIAL,QUIT,FAILURE };
 
 using I = int;
 using F = float;

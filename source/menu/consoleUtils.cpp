@@ -1,7 +1,7 @@
 #include "consoleUtils.hpp"
 
 char ConsoleUtility::getChar() {
-    return std::cin.get();
+    return getche();
 }
 
 std::ostream& ConsoleBase::consoleCodeHandling(std::ostream& os, ConsoleCode consoleCode) {

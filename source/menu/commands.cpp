@@ -49,8 +49,7 @@ TerminationCode CommandHandler::handleCommands(std::string input) {
             postfixPos = input.find(';',prefixPos);
             if(postfixPos != std::string::npos)
             {
-                if(input.find(':',prefixPos+1) < postfixPos)
-                {
+                if(input.find(':',prefixPos+1) < postfixPos) {
                     return TerminationCode::FAILURE;
                 }
                 for(auto [key,code] : commands) {
