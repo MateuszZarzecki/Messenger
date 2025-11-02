@@ -4,7 +4,30 @@
 #include <unordered_map>
 #include <map>
 
-enum class TerminationCode { NONE=-1,COMPLETE,SKIP,FINISH,PARTIAL,QUIT,FAILURE };
+enum class TerminationCode { NONE=-1,COMPLETE,SKIP,PARTIAL,FINISH,QUIT,FAILURE };
+enum class TerminationGroupCode { CORRECT=-1,PARTIAL,EXIT};
+
+class TerminationGroup {
+public:
+    TerminationGroup();
+    TerminationGroup(TerminationCode terminationCode);
+
+    void operator=(TerminationCode terminationCode);
+    TerminationGroupCode getTerminationGroupCode();
+
+    TerminationCode tCode;
+private:
+    const std::unordered_map<TerminationCode,TerminationGroupCode> terminationGroups =
+    {
+        {TerminationCode::NONE, TerminationGroupCode::CORRECT},
+        {TerminationCode::COMPLETE, TerminationGroupCode::CORRECT},
+        {TerminationCode::SKIP, TerminationGroupCode::PARTIAL},
+        {TerminationCode::PARTIAL, TerminationGroupCode::PARTIAL},
+        {TerminationCode::FINISH, TerminationGroupCode::PARTIAL},
+        {TerminationCode::QUIT, TerminationGroupCode::EXIT},
+        {TerminationCode::FAILURE, TerminationGroupCode::EXIT},
+    };
+};
 
 using I = int;
 using F = float;
@@ -25,13 +48,16 @@ template<typename DataType1, typename DataType2>
 using P = std::pair<DataType1,DataType2>;
 
 template<typename DataType1, typename DataType2, typename DataType3>
-struct Triplet {
-    Triplet(DataType1 data1, DataType2 data2, DataType3 data3) {
+struct Triplet
+{
+    Triplet(DataType1 data1, DataType2 data2, DataType3 data3)
+    {
         first = data1;
         second = data2;
         third = data3;
     }
-    Triplet() {
+    Triplet()
+    {
         first = DataType1();
         second = DataType2();
         third = DataType3();
@@ -44,29 +70,29 @@ struct Triplet {
 template<typename DataType1, typename DataType2, typename DataType3>
 using T = Triplet<DataType1,DataType2,DataType3>;
 
-template<typename DataType>
-struct ReturnData {
+struct NoneData {};
+
+template<typename DataType = NoneData>
+struct ReturnData
+{
 public:
-    ReturnData(DataType data, TerminationCode terminationCode) {
-        this->data = data;
-        tCode = terminationCode;
-    }
-    ReturnData(DataType data) {
-        this->data = data;
-        tCode = TerminationCode::NONE;
-    }
-    ReturnData(TerminationCode terminationCode) {
-        this->data = DataType();
-        tCode = terminationCode;
-    }
-    ReturnData() {
-        this->data = DataType();
-        tCode = TerminationCode::NONE;
-    }
+    static ReturnData blend();
+    ReturnData(DataType data, TerminationCode terminationCode)
+        : data(data), tGroup(terminationCode) {}
+
+    ReturnData(DataType data)
+        : data(data) {}
+
+    ReturnData(TerminationCode terminationCode)
+        : tGroup(terminationCode) {}
+
+    ReturnData() {}
+
     DataType data;
-    TerminationCode tCode;
+    TerminationGroup tGroup;
 };
 
-namespace ApplicationData {
+namespace ApplicationData
+{
     extern std::string projectName;
 }
