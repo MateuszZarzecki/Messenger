@@ -1,5 +1,5 @@
 #include "chatMenu.hpp"
 
-void ChatMenu::init() {}
-void AddFriendToChat::init() {}
-void ChangeRole::init() {}
+void ChatMenu::display() {}
+void AddFriendToChat::display() {}
+void ChangeRole::display() {}

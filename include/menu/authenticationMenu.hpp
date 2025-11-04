@@ -6,21 +6,21 @@
 
 class AuthenticationMenu : public MenuBase
 {
-public:     void init() override;
+public:     void display() override;
 private:    LocalUserAPI localUserApi;
 };
 class LoginMenu : public MenuBase
 {
-public:     void init() override;
+public:     void display() override;
 private:    LocalUserAPI localUserApi;
 };
 class SignUpMenu : public MenuBase
 {
-public:     void init() override;
+public:     void display() override;
 private:    LocalUserAPI localUserApi;
 };
 class VerifyEmailMenu : public MenuBase
 {
-public:     void init() override;
+public:     void display() override;
 private:    LocalUserAPI localUserApi;
 };

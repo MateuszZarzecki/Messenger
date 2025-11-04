@@ -5,14 +5,14 @@
 #include "chatApi.hpp"
 
 class ChatMenu : public MenuBase {
-public:     void init() override;
+public:     void display() override;
 private:    ChatAPI chatApi;
 };
 class AddFriendToChat : public MenuBase {
-public:     void init() override;
+public:     void display() override;
 private:    ChatAPI chatApi;
 };
 class ChangeRole : public MenuBase {
-public:     void init() override;
+public:     void display() override;
 private:    ChatAPI chatApi;
 };

@@ -5,5 +5,5 @@
 #include "localUserApi.hpp"
 
 class MainMenu : public MenuBase {
-public:     void init() override;
+public:     void display() override;
 };

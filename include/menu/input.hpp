@@ -15,7 +15,7 @@ class InputHandler {
 public:
     InputHandler();
 
-    ReturnData<S> getInput(bool multiLine = false);
+    Return<S> getInput(bool multiLine = false);
 private:
     Console console;
     CommandHandler commandHandler;

@@ -1,7 +1,7 @@
 #include "mainMenu.hpp"
 #include "chatMenu.hpp"
 
-void MainMenu::init() {
+void MainMenu::display() {
     menuName = "MAIN";
     submenus = {{"1", new ChatMenu()}};
     std::string output = 

@@ -22,8 +22,8 @@ private:
 };
 
 class MenuBase {
-public:   
-    virtual void init() = 0;
+public:
+    virtual void display() = 0;
 protected:
     Console console;
     MenuDisplay menuDisplay;
@@ -34,6 +34,7 @@ protected:
 
     TerminationCode chooseSubmenu(std::string& output);
     TerminationCode fillForm(std::vector<std::string>& outputs, std::vector<std::string>& inputs);
+
     void wrongInput();
 };
 

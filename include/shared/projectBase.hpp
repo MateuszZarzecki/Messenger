@@ -1,33 +1,12 @@
 #pragma once
 #include <string>
+#include <variant>
 #include <vector>
 #include <unordered_map>
 #include <map>
 
 enum class TerminationCode { NONE=-1,COMPLETE,SKIP,PARTIAL,FINISH,QUIT,FAILURE };
 enum class TerminationGroupCode { CORRECT=-1,PARTIAL,EXIT};
-
-class TerminationGroup {
-public:
-    TerminationGroup();
-    TerminationGroup(TerminationCode terminationCode);
-
-    void operator=(TerminationCode terminationCode);
-    TerminationGroupCode getTerminationGroupCode();
-
-    TerminationCode tCode;
-private:
-    const std::unordered_map<TerminationCode,TerminationGroupCode> terminationGroups =
-    {
-        {TerminationCode::NONE, TerminationGroupCode::CORRECT},
-        {TerminationCode::COMPLETE, TerminationGroupCode::CORRECT},
-        {TerminationCode::SKIP, TerminationGroupCode::PARTIAL},
-        {TerminationCode::PARTIAL, TerminationGroupCode::PARTIAL},
-        {TerminationCode::FINISH, TerminationGroupCode::PARTIAL},
-        {TerminationCode::QUIT, TerminationGroupCode::EXIT},
-        {TerminationCode::FAILURE, TerminationGroupCode::EXIT},
-    };
-};
 
 using I = int;
 using F = float;
@@ -51,17 +30,8 @@ template<typename DataType1, typename DataType2, typename DataType3>
 struct Triplet
 {
     Triplet(DataType1 data1, DataType2 data2, DataType3 data3)
-    {
-        first = data1;
-        second = data2;
-        third = data3;
-    }
-    Triplet()
-    {
-        first = DataType1();
-        second = DataType2();
-        third = DataType3();
-    }
+        : first(data1), second(data2), third(data3) {}
+    Triplet() {}
 
     DataType1 first;
     DataType2 second;
@@ -70,29 +40,45 @@ struct Triplet
 template<typename DataType1, typename DataType2, typename DataType3>
 using T = Triplet<DataType1,DataType2,DataType3>;
 
-struct NoneData {};
-
-template<typename DataType = NoneData>
-struct ReturnData
+template<typename DataType = std::monostate>
+struct [[nodiscard]] Return
 {
-public:
-    static ReturnData blend();
-    ReturnData(DataType data, TerminationCode terminationCode)
-        : data(data), tGroup(terminationCode) {}
+    Return(TerminationCode terminationCode = TerminationCode::NONE, DataType data = DataType())
+        : data(data), tCode(terminationCode) {}
 
-    ReturnData(DataType data)
-        : data(data) {}
+    TerminationGroupCode groupOf()
+    {
+        switch(tCode)
+        {
+            case TerminationCode::NONE:
+            case TerminationCode::COMPLETE: return TerminationGroupCode::CORRECT;
 
-    ReturnData(TerminationCode terminationCode)
-        : tGroup(terminationCode) {}
+            case TerminationCode::SKIP:
+            case TerminationCode::PARTIAL:
+            case TerminationCode::FINISH: return TerminationGroupCode::PARTIAL;
 
-    ReturnData() {}
+            case TerminationCode::QUIT:
+            case TerminationCode::FAILURE: return TerminationGroupCode::EXIT;
+
+            default: return TerminationGroupCode::EXIT;
+        }
+    }
+    bool ok() { return groupOf(tCode) == TerminationGroupCode::CORRECT; }
+    bool partial() { return groupOf(tCode) == TerminationGroupCode::PARTIAL; }
+    bool exit() { return groupOf(tCode) == TerminationGroupCode::EXIT; }
 
     DataType data;
-    TerminationGroup tGroup;
+    TerminationCode tCode;
 };
 
 namespace ApplicationData
 {
     extern std::string projectName;
 }
+
+
+
+
+
+
+

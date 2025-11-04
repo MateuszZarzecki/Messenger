@@ -52,7 +52,7 @@ void MenuDisplay::displayHeader(std::string menuName) {
 }
 std::vector<std::string> MenuDisplay::displayContent(std::vector<std::string> outputs, bool lastIsInput) {
     std::vector<std::string> inputs;
-    ReturnData<S> inputLine;
+    Return<S> inputLine;
 
     for(int i=0;i<outputs.size();i++) {
         console << outputs[i];
