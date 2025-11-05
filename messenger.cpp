@@ -12,19 +12,15 @@
 #include <limits>
 #include "debug.hpp"
 
+
+/*
+ * MOZLIWOSC KORZYSTANIA Z BACKSPACE, STRZALEK DELETE :()
+ * -
+ * WSZYSTKIE MOZLIWE TYPY ZAMIENIC NA SKROTY - SZYBSZE PISANIE
+*/
 int main() {
 
-    // std::cout << int('\n');
-    // InputHandler ih;
-    // ReturnData<S> input = ih.getInput();
-
-    // Debug::terminationString(input.tCode);
-    // std::cout << input.data;
-    if(getche() == '\r\n') std::cout << "ENTER";
-    std::cout << int('\r\n');
-    r - 10
-    n - 13
-    rn - 33
-    rn - 38 ASCII
+    MenuManager menuManager;
+    menuManager.display();
     return 0;
 }

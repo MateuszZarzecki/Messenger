@@ -7,6 +7,7 @@
 #include "projectBase.hpp"
 #include "input.hpp"
 #include "consoleUtils.hpp"
+#include "sharedModels.hpp"
 #include "stack"
 
 class MenuDisplay {
@@ -28,17 +29,20 @@ protected:
     Console console;
     MenuDisplay menuDisplay;
     InputHandler inputHandler;
+    PrimeUser* primeUser;
 
     std::string menuName;
     std::unordered_map<std::string,MenuBase*> submenus;
 
-    TerminationCode chooseSubmenu(std::string& output);
+    Return<I> chooseOption(std::string& output);
+    TerminationCode chooseSubmenu(V<P<S,S>>& output);
     TerminationCode fillForm(std::vector<std::string>& outputs, std::vector<std::string>& inputs);
 
     void wrongInput();
 };
 
-namespace MenuRepository {
+namespace MenuRepository
+{
     inline MenuBase* current = nullptr;
     inline std::stack<MenuBase*> previousMenus = {};
 };

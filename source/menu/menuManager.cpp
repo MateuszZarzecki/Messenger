@@ -1,16 +1,17 @@
 #include "menuManager.hpp"
 
-MenuManager::MenuManager() {
+MenuManager::MenuManager()
+{
     MenuRepository::current = new AuthenticationMenu();
 }
-MenuManager::~MenuManager() {
-    // delete menuRepository.current;
-    // for(auto [menu,key] : menuRepository.menus) {
-    //     delete menu;
-    // }
+MenuManager::~MenuManager()
+{
+
 }
-void MenuManager::display() {
-    while(MenuRepository::current) {
-        MenuRepository::current->init();
+void MenuManager::display()
+{
+    while(MenuRepository::current)
+    {
+        MenuRepository::current->display();
     }
 } 

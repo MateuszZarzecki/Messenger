@@ -22,8 +22,8 @@ json APIBase::sendRequest(std::string api, json body) {
 }
 json APIBase::getServerConnectionPackage() {
     return json({"serverConn", {
-                {"username", user->username},
-                {"password", user->password},
+                {"username", primeUser->username},
+                {"password", primeUser->password},
                 {"sessionId", sessionId}}});
 }
 void APIBase::fetchAPIStatusCodes() {

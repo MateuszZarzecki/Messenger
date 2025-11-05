@@ -2,20 +2,32 @@
 #include "input.hpp"
 #include "consoleUtils.hpp"
 
+Return<I> MenuBase::chooseOption(std::string& output) {
+    std::string input;
+    output += "(i) Choose Option: ";
 
-TerminationCode MenuBase::chooseSubmenu(std::string& output) {
-    std::vector<std::string> inputs;
+    menuDisplay.clear();
+    menuDisplay.displayHeader(menuName);
+    input = menuDisplay.displayContent({output},true)[0];
+
+    if(input.empty()) {
+        return Return<I>(TerminationCode::FAILURE);
+    }
+    return Return<I>(TerminationCode::NONE,std::stoi(input));
+}
+TerminationCode MenuBase::chooseSubmenu(V<P<S,S>>& output) {
+    std::string input;
     output += "(i) Choose Menu: ";
 
     menuDisplay.clear();
     menuDisplay.displayHeader(menuName);
-    inputs = menuDisplay.displayContent({output},true);
+    input = menuDisplay.displayContent({output},true)[0];
 
-    if(inputs.empty()) {
-        return TerminationCode::QUIT;
+    if(input.empty()) {
+        return TerminationCode::FAILURE;
     }
     MenuRepository::previousMenus.push(MenuRepository::current);
-    MenuRepository::current = submenus[inputs[0]];
+    MenuRepository::current = submenus[input];
 
     return TerminationCode::NONE;
 }

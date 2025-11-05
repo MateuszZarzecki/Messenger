@@ -13,7 +13,7 @@ class APIBase {
 public:
     APIBase();
 protected:
-    User* user;
+    PrimeUser* primeUser;
     std::string host, sessionId;
     unsigned short port;
     json apiStatusCodes;

@@ -1,17 +1,16 @@
 #include "authenticationMenu.hpp"
 #include "mainMenu.hpp"
 
-TerminationCode globalTermiantionCode = TerminationCode::NONE;
-
 void AuthenticationMenu::display()
 {
     menuName = "AUTHENTICATION";
     submenus = {{"1", new LoginMenu()}, {"2", new SignUpMenu()}};
 
-    std::string output =
-        "1. Login \n"
-        "2. Register \n";
-
+    V<P<S,S>> output =
+    {
+        {"1. ", "Login"},
+        {"2. ", "Register"}
+    };
     if(chooseSubmenu(output) == TerminationCode::QUIT) return;
 }
 void LoginMenu::display()
@@ -19,8 +18,8 @@ void LoginMenu::display()
     menuName = "LOGIN";
     submenus = {{"",new MainMenu()}};
 
-    std::vector<std::string> inputs = {"identifier", "password"};
-    std::vector<std::string> outputs = {
+    V<S> inputs = {"identifier", "password"};
+    V<S> outputs = {
         "(i) Username, Email or Phone number: ",
         "(i) Password: ",
     };
@@ -32,8 +31,8 @@ void SignUpMenu::display()
     menuName = "SIGN UP";
     submenus = {{"",new VerifyEmailMenu()}};
 
-    std::vector<std::string> inputs = {"username", "password", "repeatedPassword", "email", "phoneNumber"};
-    std::vector<std::string> outputs = {
+    V<S> inputs = {"username", "password", "repeatedPassword", "email", "phoneNumber"};
+    V<S> outputs = {
         "(i) Username: ",
         "(i) Password: ",
         "(i) Repeat password: ",
@@ -48,8 +47,12 @@ void VerifyEmailMenu::display()
     menuName = "VERIFY EMAIL";
     submenus = {{"",new MainMenu()}};
 
-    std::string output =
-        "We sent you verification link on \"" + SocialNetworkRepository::;
+    V<P<S,S>> output =
+    {
+        //{"Click a link sent on \"" + primeUser->email + "\"\n\n"},
+        {"1. ","Back"},
+        {"2. ","Info"},
+    };
 }
 
 
