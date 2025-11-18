@@ -33,7 +33,6 @@ struct Chat
     std::vector<Message> messages;
     std::vector<Member> members;
     ChatType chatType;
-
 };
 struct User
 {
@@ -44,6 +43,7 @@ struct User
     std::vector<std::string> previousIps;
     std::string username, email, phoneNumber;
 };
+
 struct PrimeUser : public User
 {
     PrimeUser(std::string username, std::string password, std::string email, std::string phoneNumber="");

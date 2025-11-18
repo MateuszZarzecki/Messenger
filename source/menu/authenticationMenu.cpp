@@ -6,12 +6,10 @@ void AuthenticationMenu::display()
     menuName = "AUTHENTICATION";
     submenus = {{"1", new LoginMenu()}, {"2", new SignUpMenu()}};
 
-    V<P<S,S>> output =
-    {
-        {"1. ", "Login"},
-        {"2. ", "Register"}
-    };
-    if(chooseSubmenu(output) == TerminationCode::QUIT) return;
+    S output = "1. Login\n"
+               "2. Register\n";
+
+    chooseSubmenu(output);
 }
 void LoginMenu::display()
 {
@@ -19,11 +17,12 @@ void LoginMenu::display()
     submenus = {{"",new MainMenu()}};
 
     V<S> inputs = {"identifier", "password"};
-    V<S> outputs = {
-        "(i) Username, Email or Phone number: ",
-        "(i) Password: ",
+    V<P<S,B>> outputs =
+    {
+        {"(i) Username, Email or Phone number: ",false},
+        {"(i) Password: ",false}
     };
-    if(fillForm(outputs, inputs) == TerminationCode::QUIT) return;
+    if(fillForm(outputs).exit()) return;
     localUserApi.login(inputs[0], inputs[1]);
 }
 void SignUpMenu::display()
@@ -32,14 +31,15 @@ void SignUpMenu::display()
     submenus = {{"",new VerifyEmailMenu()}};
 
     V<S> inputs = {"username", "password", "repeatedPassword", "email", "phoneNumber"};
-    V<S> outputs = {
-        "(i) Username: ",
-        "(i) Password: ",
-        "(i) Repeat password: ",
-        "(i) Email: ",
-        "(i) Phone number (optional): "
+    V<P<S,B>> outputs =
+    {
+        {"(i) Username: ",false},
+        {"(i) Password: ",false},
+        {"(i) Repeat password: ",false},
+        {"(i) Email: ",false},
+        {"(i) Phone number (optional): ",false}
     };
-    if(fillForm(outputs, inputs) == TerminationCode::QUIT) return;
+    if(fillForm(outputs).exit()) return;
     localUserApi.signUp(inputs[0], inputs[1], inputs[2]);
 }
 void VerifyEmailMenu::display()
@@ -47,12 +47,8 @@ void VerifyEmailMenu::display()
     menuName = "VERIFY EMAIL";
     submenus = {{"",new MainMenu()}};
 
-    V<P<S,S>> output =
-    {
-        //{"Click a link sent on \"" + primeUser->email + "\"\n\n"},
-        {"1. ","Back"},
-        {"2. ","Info"},
-    };
+    S output = "Enter 4-digit code sent on " + primeUser->email + ":\n"
+                "____";
 }
 
 

@@ -31,7 +31,6 @@ void LocalUserAPI::login(std::string identifier, std::string password) {
 
     // if(response["statusCode"])
     // sessionId = response["sessionId"];
-
 }
 void LocalUserAPI::signUp(std::string email, std::string username, std::string password) {
 

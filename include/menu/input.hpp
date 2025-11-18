@@ -15,7 +15,7 @@ class InputHandler {
 public:
     InputHandler();
 
-    Return<S> getInput(bool multiLine = false);
+    Return<S> getInput(bool multiLine = false, std::function<TerminationCode(std::string)> actionListener = {});
 private:
     Console console;
     CommandHandler commandHandler;

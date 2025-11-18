@@ -12,10 +12,6 @@ enum class ConsoleCode {
     BG_WHITE,BG_BLACK,BG_GREEN,BG_RED,BG_BLUE
 };
 
-namespace ConsoleUtility {
-    char getChar();
-}
-
 class ConsoleBase {
 protected:
     std::ostream& consoleCodeHandling(std::ostream& os, ConsoleCode consoleCode);
@@ -45,6 +41,7 @@ public:
 private:
     std::ostringstream oss;
 };
+
 class Console : public ConsoleBase {
 public:
     Console();
@@ -65,5 +62,14 @@ private:
     std::ostream& os;
 };
 
+class  {
+public:
+    static char revealChar();
+    static char pullChar();
+    static void showChar();
+private:
+    static char buffer;
+    static Console console;
+};
 
 

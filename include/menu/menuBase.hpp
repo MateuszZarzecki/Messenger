@@ -10,19 +10,21 @@
 #include "sharedModels.hpp"
 #include "stack"
 
-class MenuDisplay {
+class MenuDisplay
+{
 public:
     void clear();
 
-    void displayHeader(std::string menuName);
-    std::vector<std::string> displayContent(std::vector<std::string> outputs, bool lastIsInput=false);
+    void displayHeader(S menuName);
+    Return<V<S>> displayContent(V<P<S,B>> outputs, std::function<TerminationCode(S)> actionListener = {});
 private:
     InputHandler inputHandler;
     Console console;
-    std::string header, content, inputs;
+    S header, content, inputs;
 };
 
-class MenuBase {
+class MenuBase
+{
 public:
     virtual void display() = 0;
 protected:
@@ -31,14 +33,14 @@ protected:
     InputHandler inputHandler;
     PrimeUser* primeUser;
 
-    std::string menuName;
-    std::unordered_map<std::string,MenuBase*> submenus;
+    S menuName;
+    UM<S,MenuBase*> submenus;
 
-    Return<I> chooseOption(std::string& output);
-    TerminationCode chooseSubmenu(V<P<S,S>>& output);
-    TerminationCode fillForm(std::vector<std::string>& outputs, std::vector<std::string>& inputs);
+    TerminationCode chooseSubmenu(S& output);
+    Return<S> chooseOption(S& output, V<S>& options);
+    Return<V<S>> fillForm(V<P<S,B>>& outputs, std::function<TerminationCode(S)> actionListener = {});
 
-    void wrongInput();
+    TerminationCode wrongInput();
 };
 
 namespace MenuRepository

@@ -4,10 +4,14 @@
 #include <vector>
 #include <unordered_map>
 #include <map>
+#include <algorithm>
 
-enum class TerminationCode { NONE=-1,COMPLETE,SKIP,PARTIAL,FINISH,QUIT,FAILURE };
+//ZASTAPIC NONE - DONE
+
+enum class TerminationCode { NONE=-1,DONE,COMPLETE,SKIP,PARTIAL,FINISH,QUIT,FAILURE };
 enum class TerminationGroupCode { CORRECT=-1,PARTIAL,EXIT};
 
+using B = bool;
 using I = int;
 using F = float;
 using D = double;
@@ -46,11 +50,12 @@ struct [[nodiscard]] Return
     Return(TerminationCode terminationCode = TerminationCode::NONE, DataType data = DataType())
         : data(data), tCode(terminationCode) {}
 
-    TerminationGroupCode groupOf()
+    TerminationGroupCode groupOf(TerminationCode tCodeArg)
     {
-        switch(tCode)
+        switch(tCodeArg)
         {
             case TerminationCode::NONE:
+            case TerminationCode::DONE:
             case TerminationCode::COMPLETE: return TerminationGroupCode::CORRECT;
 
             case TerminationCode::SKIP:
@@ -62,6 +67,18 @@ struct [[nodiscard]] Return
 
             default: return TerminationGroupCode::EXIT;
         }
+    }
+    Return merge(V<Return> returns)
+    {
+        TerminationCode combined = TerminationCode::NONE;
+        for(Return ret : returns)
+        {
+            if((int)combined < (int)ret.tCode)
+            {
+                combined = ret.tCode;
+            }
+        }
+        return Return<DataType>(combined,data);
     }
     bool ok() { return groupOf(tCode) == TerminationGroupCode::CORRECT; }
     bool partial() { return groupOf(tCode) == TerminationGroupCode::PARTIAL; }

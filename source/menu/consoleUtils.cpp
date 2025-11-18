@@ -1,7 +1,15 @@
 #include "consoleUtils.hpp"
 
-char ConsoleUtility::getChar() {
-    return getche();
+char ConsoleUtility::revealChar() {
+    buffer = getche();
+    return buffer;
+}
+char ConsoleUtility::pullChar() {
+    buffer = getch();
+    return buffer;
+}
+void ConsoleUtility::showChar() {
+    console << buffer;
 }
 
 std::ostream& ConsoleBase::consoleCodeHandling(std::ostream& os, ConsoleCode consoleCode) {
