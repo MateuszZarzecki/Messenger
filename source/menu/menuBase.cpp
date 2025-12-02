@@ -1,24 +1,23 @@
 #include "menuBase.hpp"
-#include "input.hpp"
-#include "consoleUtils.hpp"
 
-Return<S> MenuBase::chooseOption(S& output, V<S>& options) {
-    Return<V<S>> content;
-    Return<S> option;
-    output += "(i) Choose Option: ";
+// Return<MenuOutcome,S> MenuBase::chooseOption(S& output, V<S>& options) {
+//     Return<V<S>> content;
+//     Return<S> option;
+//     output += "(i) Choose Option: ";
 
-    menuDisplay.clear();
-    menuDisplay.displayHeader(menuName);
-    //content = menuDisplay.displayContent({output});
-    option = Return<S>(content.tCode, content.data[0]);
+//     menuDisplay.clear();
+//     menuDisplay.displayHeader(menuName);
+//     //content = menuDisplay.displayContent({output});
+//     option = Return<S>(content.tCode, content.data[0]);
 
-    if(option.data.empty() || std::find(options.begin(),options.end(),option.data) == options.end())
-    {
-        return Return<S>(TerminationCode::FAILURE);
-    }
-    return option;
-}
-TerminationCode MenuBase::chooseSubmenu(S& output) {
+//     if(option.data.empty() || std::find(options.begin(),options.end(),option.data) == options.end())
+//     {
+//         return Return<S>(MenuOutcome::FAILURE);
+//     }
+//     return option;
+// }
+
+MenuOutcome MenuBase::chooseSubmenu(S& output) {
     S input;
     output += "(i) Choose Menu: ";
 
@@ -28,42 +27,44 @@ TerminationCode MenuBase::chooseSubmenu(S& output) {
 
     if(input.empty() || !submenus.count(input))
     {
-        return TerminationCode::FAILURE;
+        return MenuOutcome::FAILURE;
     }
 
     MenuRepository::previousMenus.push(MenuRepository::current);
     MenuRepository::current = submenus[input];
 
-    return TerminationCode::NONE;
+    return MenuOutcome::NONE;
 }
-Return<V<S>> MenuBase::fillForm(V<P<S,B>>& outputs, std::function<TerminationCode(S)> actionListener)
+
+Return<MenuOutcome,V<S>> MenuBase::fillForm(V<P<S,B>>& outputs, std::function<void(S&,S&)> actionListener)
 {
-    Return<V<S>> inputs;
+    Return<MenuOutcome,V<S>> inputs;
 
     menuDisplay.clear();
     menuDisplay.displayHeader(menuName);
     inputs = menuDisplay.displayContent(outputs, actionListener);
 
-    if(!inputs.ok())
+    if(inputs.tCode != MenuOutcome::NONE)
     {
         return inputs;
     }
     MenuRepository::previousMenus.push(MenuRepository::current);
     MenuRepository::current = submenus[""];
 
-    return TerminationCode::NONE;
+    return MenuOutcome::NONE;
 }
-TerminationCode MenuBase::wrongInput()
+
+MenuOutcome MenuBase::wrongInput()
 {
-    Return<V<S>> inputs;
-    std::function<TerminationCode(S)> actionListenerer =
-    [](S content) {
-        if(content == " ") return TerminationCode::DONE;
-        else return TerminationCode::NONE;
+    Return<MenuOutcome,V<S>> inputs;
+    std::function<void(S& input,S& output)> effect =
+    [](S& input, S& output) {
+        if(input == " ") return MenuOutcome::NONE;
+        else return MenuOutcome::NONE;
     };
 
     menuDisplay.clear();
-    inputs = menuDisplay.displayContent({{"\n\nWrong input. Enter [SPACE] to retry or see [:m;]",false}}, actionListenerer);
+    inputs = menuDisplay.displayContent({{"\n\nWrong input. Enter [SPACE] to retry or see [:m;]",false}}, effect);
 
     return inputs.tCode;
 }
@@ -79,24 +80,24 @@ void MenuDisplay::displayHeader(std::string menuName) {
         
         header +=  "| Messenger | BACK[:b;] - QUIT[:q;] - HOME[:h;] - MANUAL[:m;] |\n"
                   "|___________|"+               menuHeaderCentered            +"|\n";
-        console << header << ConsoleCode::NLINE;
+        outputHandler << header << ConsoleCode::NLINE;
 }
-Return<V<S>> MenuDisplay::displayContent(V<P<S,B>> outputs, std::function<TerminationCode(S)> actionListener) {
-    V<S> inputs;
-    Return<S> inputLine;
+Return<MenuOutcome,V<S>> MenuDisplay::displayContent(V<P<S,B>> outputs, std::function<void(S&,S&)> effect) {
+    //V<S> inputs; w inputHandler
 
+    Return<MenuOutcome,S> inputLine;
     for(auto [output,multiLine] : outputs) {
-        console << output;
-        inputLine = inputHandler.getInput(multiLine,actionListener);
+        outputHandler << output;
+        inputLine = inputHandler.getInput(multiLine,effect);
 
-        if(inputLine.exit()) return Return<V<S>>(inputLine.tCode);
+        //if(inputLine.exit()) return Return<V<S>>(inputLine.tCode);
 
-        inputs.push_back(inputLine.data);
-        console << ConsoleCode::NLINE;
+        // inputs.push_back(inputLine.data); w inputHandler
+        outputHandler << ConsoleCode::NLINE;
     }
-    return Return<V<S>>(inputLine.tCode,inputs);
+    return Return<MenuOutcome,V<S>>(inputLine.tCode,{});
 }
 void MenuDisplay::clear() {
     header = content = "";
-    console << ConsoleCode::CLEAR_PAGE;
+    outputHandler << ConsoleCode::CLEAR_PAGE;
 }

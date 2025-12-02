@@ -6,20 +6,20 @@
 
 #include "projectBase.hpp"
 #include "input.hpp"
-#include "consoleUtils.hpp"
+#include "output.hpp"
 #include "sharedModels.hpp"
 #include "stack"
+
 
 class MenuDisplay
 {
 public:
     void clear();
-
     void displayHeader(S menuName);
-    Return<V<S>> displayContent(V<P<S,B>> outputs, std::function<TerminationCode(S)> actionListener = {});
+    Return<MenuOutcome,V<S>> displayContent(V<P<S,B>> outputs, std::function<void(S&,S&)> effect = {});
 private:
     InputHandler inputHandler;
-    Console console;
+    OutputHandler outputHandler;
     S header, content, inputs;
 };
 
@@ -28,19 +28,20 @@ class MenuBase
 public:
     virtual void display() = 0;
 protected:
-    Console console;
-    MenuDisplay menuDisplay;
+    OutputHandler outputHandler;
     InputHandler inputHandler;
+
+    MenuDisplay menuDisplay;
     PrimeUser* primeUser;
 
     S menuName;
     UM<S,MenuBase*> submenus;
 
-    TerminationCode chooseSubmenu(S& output);
-    Return<S> chooseOption(S& output, V<S>& options);
-    Return<V<S>> fillForm(V<P<S,B>>& outputs, std::function<TerminationCode(S)> actionListener = {});
+    MenuOutcome chooseSubmenu(S& output);
+    Return<MenuOutcome,S> chooseOption(S& output, V<S>& options);
+    Return<MenuOutcome,V<S>> fillForm(V<P<S,B>>& outputs,std::function<void(S&,S&)> effect = {});
 
-    TerminationCode wrongInput();
+    MenuOutcome wrongInput();
 };
 
 namespace MenuRepository
@@ -48,6 +49,3 @@ namespace MenuRepository
     inline MenuBase* current = nullptr;
     inline std::stack<MenuBase*> previousMenus = {};
 };
-
-
-

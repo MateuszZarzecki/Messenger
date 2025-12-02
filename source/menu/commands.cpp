@@ -1,18 +1,16 @@
 #include "commands.hpp"
-#include "consoleUtils.hpp"
-#include "menuBase.hpp"
 
 CommandHandler::CommandHandler() {
 
     prefix = ':'; postfix = ';'; paramChar = '=';
     commandsTerminations = {
-        {CommandCode::NONE, TerminationCode::NONE},
-        {CommandCode::MANUAL, TerminationCode::NONE},
-        {CommandCode::TEXTCOLOR, TerminationCode::NONE},
-        {CommandCode::FINISH, TerminationCode::FINISH},
-        {CommandCode::QUIT, TerminationCode::QUIT},
-        {CommandCode::HOME, TerminationCode::QUIT},
-        {CommandCode::BACK, TerminationCode::QUIT}
+        {CommandCode::NONE, MenuOutcome::NONE},
+        {CommandCode::MANUAL, MenuOutcome::NONE},
+        {CommandCode::TEXTCOLOR, MenuOutcome::NONE},
+        {CommandCode::FINISH, MenuOutcome::FINISH},
+        {CommandCode::QUIT, MenuOutcome::QUIT},
+        {CommandCode::HOME, MenuOutcome::QUIT},
+        {CommandCode::BACK, MenuOutcome::QUIT}
     };
     commands = {
         {"f", CommandCode::FINISH}, {"finish", CommandCode::FINISH},
@@ -28,9 +26,9 @@ CommandHandler::CommandHandler() {
         {CommandCode::QUIT, &CommandHandler::quitCommand}
     };
 }
-TerminationCode CommandHandler::handleCommands(std::string input) {
+MenuOutcome CommandHandler::handleCommands(std::string input) {
 
-    TerminationCode terminationCode = TerminationCode::NONE;
+    MenuOutcome terminationCode = MenuOutcome::NONE;
     std::vector<std::tuple<CommandCode,size_t,std::string>> commandsFound;
     for(size_t i=1; i<input.size(); i++) {
         if(input[i-1] == prefix && input[i] == prefix) {
@@ -50,7 +48,7 @@ TerminationCode CommandHandler::handleCommands(std::string input) {
             if(postfixPos != std::string::npos)
             {
                 if(input.find(':',prefixPos+1) < postfixPos) {
-                    return TerminationCode::FAILURE;
+                    return MenuOutcome::FAILURE;
                 }
                 for(auto [key,code] : commands) {
                     if(input.find(prefix+key,prefixPos) < postfixPos)
@@ -60,7 +58,7 @@ TerminationCode CommandHandler::handleCommands(std::string input) {
                         {
                             parameter = input.substr(afterCommandNamePos+1,postfixPos-afterCommandNamePos-1);
                         }
-                        else if(afterCommandNamePos != postfixPos) { return TerminationCode::FAILURE; }
+                        else if(afterCommandNamePos != postfixPos) { return MenuOutcome::FAILURE; }
 
                         commandsFound.push_back({code,prefixPos,parameter});
                         prefixPos=postfixPos;
@@ -70,7 +68,7 @@ TerminationCode CommandHandler::handleCommands(std::string input) {
                 }
                 if(!foundCommand)
                 {
-                    return TerminationCode::FAILURE;
+                    return MenuOutcome::FAILURE;
                 }
             }
             else { break; }
@@ -83,7 +81,7 @@ TerminationCode CommandHandler::handleCommands(std::string input) {
     for(auto command : commandsFound)
     {
         terminationCode = (this->*commandsResponses[std::get<0>(command)])({std::get<1>(command),std::get<2>(command)});
-        if(terminationCode == TerminationCode::QUIT || terminationCode == TerminationCode::FINISH)
+        if(terminationCode == MenuOutcome::QUIT || terminationCode == MenuOutcome::FINISH)
         {
             break;
         }
@@ -100,8 +98,8 @@ std::string CommandHandler::unescapePrefixes(std::string input) {
 // TerminationCode CommandHandler::finishSignal(std::vector<std::string> args) {
 //     return TerminationCode::NONE;
 // }
-TerminationCode CommandHandler::quitCommand(std::vector<std::string> args) {
-    return TerminationCode::QUIT;
+MenuOutcome CommandHandler::quitCommand(std::vector<std::string> args) {
+    return MenuOutcome::QUIT;
 }
 // TerminationCode CommandHandler::homeSignal(std::vector<std::string> args) {
 //     return TerminationCode::NONE;
@@ -109,15 +107,15 @@ TerminationCode CommandHandler::quitCommand(std::vector<std::string> args) {
 // TerminationCode CommandHandler::manualSignal(std::vector<std::string> args) {
 //     return TerminationCode::NONE;
 // }
-TerminationCode CommandHandler::backCommand(std::vector<std::string> args) {
+MenuOutcome CommandHandler::backCommand(std::vector<std::string> args) {
     // if(MenuRepository::previousMenus.size() > 0) {
     //     MenuRepository::current = MenuRepository::previousMenus.top();
     //     MenuRepository::previousMenus.pop();
     // }
-    return TerminationCode::QUIT;
+    return MenuOutcome::QUIT;
 }
-TerminationCode CommandHandler::textColorCommand(std::vector<std::string> args) {
-    return TerminationCode::NONE;
+MenuOutcome CommandHandler::textColorCommand(std::vector<std::string> args) {
+    return MenuOutcome::NONE;
 }
 //signal function 
 /*

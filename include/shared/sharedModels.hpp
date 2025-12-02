@@ -2,9 +2,14 @@
 #include <string>
 #include <vector>
 
+//STRUCT DANE
+//CLASS FUNKCJONALNOSC
+
 enum class Theme { WHITE,BLACK,COLORFUL };
 
 struct User;
+
+//
 
 struct Chat
 {
@@ -23,7 +28,7 @@ struct Chat
     {
         Member* sender;
         std::string message;
-        Message* reference;
+        Message* reply; // ?
         long long sendTimestamp;
         bool edited;
     };

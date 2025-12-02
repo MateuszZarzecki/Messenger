@@ -1,10 +1,33 @@
 #include "input.hpp"
 
+CharHandler::CharHandler()
+    : buffer(0) {}
+
+char CharHandler::process()
+{
+    buffer = getch();
+    display();
+    return buffer;
+}
+char CharHandler::read()
+{
+    buffer = getch();
+    return buffer;
+}
+void CharHandler::display()
+{
+    if(buffer == '\r')
+        outputHandler << ConsoleCode::NLINE;
+    else
+        outputHandler << buffer;
+}
+
 InputHandler::InputHandler() {}
 
-Return<S> InputHandler::getInput(bool multiLine, std::function<TerminationCode(S)> actionListener){
-    TerminationCode commandTCode, conditionTCode;
-    Return<S> combinedReturn;
+
+Return<MenuOutcome,S> InputHandler::getInput(bool multiLine, std::function<void(S&,S&)> effect){
+    MenuOutcome commandTCode, conditionTCode;
+    Return<MenuOutcome,S> combinedReturn;
     std::string message = "", inputLine = "", complitedMessage = "";
     char character;
 
@@ -12,8 +35,7 @@ Return<S> InputHandler::getInput(bool multiLine, std::function<TerminationCode(S
     {
         while(true)
         {
-
-            character = ConsoleUtility::getChar();
+            character = charHandler.process();
             inputLine += character;
             complitedMessage = message + inputLine;
 
@@ -21,11 +43,11 @@ Return<S> InputHandler::getInput(bool multiLine, std::function<TerminationCode(S
 
             commandTCode = commandHandler.handleCommands(complitedMessage);
             commandHandler.unescapePrefixes(complitedMessage);
-            conditionTCode = actionListener(complitedMessage);
 
-            combinedReturn = combinedReturn.merge({{commandTCode},{conditionTCode}});
+            S outputs = outputHandler.getOutputBuffer();
+            effect(inputs,outputs);
 
-            if(!combinedReturn.ok())
+            if(combinedReturn.tCode != MenuOutcome::NONE)
             {
                 combinedReturn.data = complitedMessage;
                 return combinedReturn;
@@ -33,11 +55,11 @@ Return<S> InputHandler::getInput(bool multiLine, std::function<TerminationCode(S
         }
         if(!multiLine)
         {
-            return Return<S>(combinedReturn.tCode,complitedMessage.substr(0,complitedMessage.size()-1));
+            return Return<MenuOutcome,S>(combinedReturn.tCode,complitedMessage.substr(0,complitedMessage.size()-1));
         }
         message += "\n" + inputLine;
         inputLine = "";
     } while(multiLine);
 
-    return Return<S>();
+    return Return<MenuOutcome,S>();
 }

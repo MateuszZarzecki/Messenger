@@ -9,14 +9,30 @@
 
 #include "projectBase.hpp"
 #include "commands.hpp"
-#include "consoleUtils.hpp"
+
+class CharHandler
+{
+public:
+    CharHandler();
+
+    char process();
+    char read();
+    void display();
+private:
+    char buffer;
+    OutputHandler outputHandler;
+};
 
 class InputHandler {
 public:
     InputHandler();
 
-    Return<S> getInput(bool multiLine = false, std::function<TerminationCode(std::string)> actionListener = {});
+    Return<MenuOutcome,S> getInput(bool multiLine = false, std::function<void(S&,S&)> effect = {});
+    void clearInputBuffer();
+    S getInputBuffer();
 private:
-    Console console;
+    S inputs;
+    OutputHandler outputHandler;
+    CharHandler charHandler;
     CommandHandler commandHandler;
 };
