@@ -3,6 +3,7 @@
 
 #include "menuBase.hpp"
 #include "localUserApi.hpp"
+#include "mainMenu.hpp"
 
 class AuthenticationMenu : public MenuBase
 {

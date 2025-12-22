@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <sstream>
+#include <functional>
 
 #include "projectBase.hpp"
 
@@ -20,7 +21,7 @@ class OutputString : public ConsoleOutput {
 public:
     OutputString() = default;
 
-    S stream();
+    S getString();
 
     template<typename OutputType>
     OutputString& operator<<(OutputType&& output) {
@@ -56,8 +57,78 @@ public:
     OutputHandler& operator<<(OutputString& consoleString);
 
     void clearOutputBuffer();
-    S getOutputBuffer();
+    V<S> getOutputBuffer();
+
+    void handleSpecialKeys(SpecialKey specialKey);
 private:
-    S outputs;
+    V<S> outputs;
     std::ostream& os;
+
+    V<P<std::function<void(S&)>,I>> effects;
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

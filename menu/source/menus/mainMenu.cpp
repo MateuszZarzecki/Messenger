@@ -1,5 +1,4 @@
 #include "mainMenu.hpp"
-#include "chatMenu.hpp"
 
 void MainMenu::display() {
     menuName = "MAIN";

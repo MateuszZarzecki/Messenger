@@ -1,22 +1,16 @@
+TEMPLATE = app
 TARGET = messenger
-CONFIG += console c++17
-CONFIG += debug
+CONFIG += console c++17 debug
+CONFIG -= app_bundle qt windows
 
-CONFIG -= app_bundle
-CONFIG -= qt
+INCLUDEPATH += \
+           C:/dev/libraries_cpp/HTTPRequest-master/include \
+           C:/dev/libraries_cpp/json-nlohmann
 
-SOURCES += $$files(*.cpp,true) \
-    source/menu/output.cpp
-HEADERS += $$files(include/*.h*,true) \
-    include/menu/output.hpp
+include(menu/menu.pri)
+include(server/server.pri)
+include(shared/shared.pri)
 
-INCLUDEPATH += "$$PWD/include/menu"\
-           "$$PWD/include/server"\
-           "$$PWD/include/shared"\
-           "C:/dev/libraries_cpp/HTTPRequest-master/include" \
-           "C:/dev/libraries_cpp/json-nlohmann"
+SOURCES += messenger.cpp
 
 LIBS += -lws2_32
-
-
-

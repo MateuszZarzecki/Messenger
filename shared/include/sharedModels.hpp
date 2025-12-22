@@ -2,30 +2,28 @@
 #include <string>
 #include <vector>
 
-//STRUCT DANE
-//CLASS FUNKCJONALNOSC
-
 enum class Theme { WHITE,BLACK,COLORFUL };
 
-struct User;
+class User;
 
-//
-
-struct Chat
+class Chat
 {
+public:
     Chat(std::string chatName, long long creationTimestamp);
 
     enum class ChatType { PRIVATE_UNKNOWN,PRIVATE_FRIEND,GROUP };
     enum class Role { MEMBER=-1,ADMIN,OWNER };
 
-    struct Member
+    class Member
     {
+    public:
         Role role;
         User* user;
         int lastReadMessage;
     };
-    struct Message
+    class Message
     {
+    public:
         Member* sender;
         std::string message;
         Message* reply; // ?
@@ -39,8 +37,9 @@ struct Chat
     std::vector<Member> members;
     ChatType chatType;
 };
-struct User
+class User
 {
+public:
     User(std::string username,std::string email={},std::string phoneNumber={});
 
     std::vector<Chat> chats;
@@ -49,12 +48,14 @@ struct User
     std::string username, email, phoneNumber;
 };
 
-struct PrimeUser : public User
+class PrimeUser : public User
 {
+public:
     PrimeUser(std::string username, std::string password, std::string email, std::string phoneNumber="");
 
-    struct Invitation
+    class Invitation
     {
+    public:
         User* sender;
         long long sendTimestamp;
     };

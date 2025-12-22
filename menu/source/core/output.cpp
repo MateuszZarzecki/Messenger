@@ -15,14 +15,14 @@ std::ostream& ConsoleOutput::consoleCodeHandling(std::ostream& os, ConsoleCode c
     return os;
 }
 
-S OutputString::stream()
+S OutputString::getString()
 {
     return oss.str();
 }
 
 OutputString& OutputString::operator<<(OutputString& consoleString)
 {
-    oss << consoleString.stream();
+    oss << consoleString.getString();
     return *this;
 }
 
@@ -36,10 +36,9 @@ OutputHandler::OutputHandler() : os(std::cout) {}
 
 OutputHandler& OutputHandler::operator<<(OutputString& consoleString)
 {
-    os << consoleString.stream();
+    os << consoleString.getString();
     return *this;
 }
-
 OutputHandler& OutputHandler::operator<<(ConsoleCode consoleCode)
 {
     consoleCodeHandling(os, consoleCode);
@@ -47,9 +46,9 @@ OutputHandler& OutputHandler::operator<<(ConsoleCode consoleCode)
 }
 void OutputHandler::clearOutputBuffer()
 {
-    outputs = "";
+    outputs.clear();
 }
-S OutputHandler::getOutputBuffer()
+V<S> OutputHandler::getOutputBuffer()
 {
     return outputs;
 }

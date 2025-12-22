@@ -1,5 +1,4 @@
 #include "authenticationMenu.hpp"
-#include "mainMenu.hpp"
 
 void AuthenticationMenu::display()
 {
@@ -22,8 +21,8 @@ void LoginMenu::display()
         {"(i) Username, Email or Phone number: ",false},
         {"(i) Password: ",false}
     };
-    if(fillForm(outputs).tCode != MenuOutcome::NONE) return;
-    localUserApi.login(inputs[0], inputs[1]);
+    if(fillForm(outputs).outcome != MenuOutcome::NONE) return;
+    //localUserApi.login(inputs[0], inputs[1]);
 }
 void SignUpMenu::display()
 {
@@ -39,7 +38,7 @@ void SignUpMenu::display()
         {"(i) Email: ",false},
         {"(i) Phone number (optional): ",false}
     };
-    if(fillForm(outputs).tCode != MenuOutcome::NONE) return;
+    if(fillForm(outputs).outcome != MenuOutcome::NONE) return;
     localUserApi.signUp(inputs[0], inputs[1], inputs[2]);
 }
 void VerifyEmailMenu::display()

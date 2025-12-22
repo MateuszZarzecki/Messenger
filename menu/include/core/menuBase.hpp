@@ -3,35 +3,21 @@
 #include <unordered_map>
 #include <vector>
 #include <functional>
+#include <stack>
 
 #include "projectBase.hpp"
 #include "input.hpp"
-#include "output.hpp"
+#include "interactionManager.hpp"
 #include "sharedModels.hpp"
-#include "stack"
-
-
-class MenuDisplay
-{
-public:
-    void clear();
-    void displayHeader(S menuName);
-    Return<MenuOutcome,V<S>> displayContent(V<P<S,B>> outputs, std::function<void(S&,S&)> effect = {});
-private:
-    InputHandler inputHandler;
-    OutputHandler outputHandler;
-    S header, content, inputs;
-};
 
 class MenuBase
 {
 public:
     virtual void display() = 0;
 protected:
-    OutputHandler outputHandler;
-    InputHandler inputHandler;
 
-    MenuDisplay menuDisplay;
+    InteractionManager interactionManager;
+
     PrimeUser* primeUser;
 
     S menuName;
@@ -39,9 +25,10 @@ protected:
 
     MenuOutcome chooseSubmenu(S& output);
     Return<MenuOutcome,S> chooseOption(S& output, V<S>& options);
-    Return<MenuOutcome,V<S>> fillForm(V<P<S,B>>& outputs,std::function<void(S&,S&)> effect = {});
+    Return<MenuOutcome,V<S>> fillForm(V<P<S,B>>& outputs, V<std::function<void(S&,S&)>> effects = {});
 
     MenuOutcome wrongInput();
+    S getHeader();
 };
 
 namespace MenuRepository

@@ -6,6 +6,7 @@
 #include <map>
 #include <algorithm>
 
+using C = char;
 using B = bool;
 using I = int;
 using F = float;
@@ -26,8 +27,9 @@ template<typename DataType1, typename DataType2>
 using P = std::pair<DataType1,DataType2>;
 
 template<typename DataType1, typename DataType2, typename DataType3>
-struct Triplet
+class Triplet
 {
+public:
     Triplet(DataType1 data1, DataType2 data2, DataType3 data3)
         : first(data1), second(data2), third(data3) {}
     Triplet() {}
@@ -39,18 +41,16 @@ struct Triplet
 template<typename DataType1, typename DataType2, typename DataType3>
 using T = Triplet<DataType1,DataType2,DataType3>;
 
-template<typename TerminationCode, typename DataType = std::monostate>
-struct [[nodiscard]] Return
+template<typename Outcome, typename DataType = std::monostate>
+class [[nodiscard]] Return
 {
-    Return(TerminationCode terminationCode = (TerminationCode)-1, DataType data = DataType())
-        : data(data), tCode(terminationCode) {}
+public:
+    Return(Outcome outcome = (Outcome)(-1), DataType data = DataType())
+        : data(data), outcome(outcome) {}
 
     DataType data;
-    TerminationCode tCode;
+    Outcome outcome;
 };
-
-enum class MenuOutcome { NONE=-1,FINISH,QUIT,FAILURE };
-
 namespace ApplicationData
 {
     inline std::string projectName = "Messenger";
