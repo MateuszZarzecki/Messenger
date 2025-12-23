@@ -51,13 +51,6 @@ public:
     DataType data;
     Outcome outcome;
 };
-namespace ApplicationData
-{
-    inline std::string projectName = "Messenger";
-}
-
-
-
 
 
 

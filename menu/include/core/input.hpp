@@ -9,36 +9,11 @@
 
 #include "projectBase.hpp"
 #include "command.hpp"
+#include "key.hpp"
+#include "effect.hpp"
 
 //KEY - RAW SINGLE INPUT
 //CHARACTER - PRINTABLE PROCESSED SINGLE INPUT
-
-//ADD TO OUTPUT.hpp
-enum class SpecialKey
-{
-    NONE=-1,
-    BACKSPACE,COLON,SEMICOLON,TAB,ENTER,DELETE,
-    ARROW_LEFT,ARROW_TOP,ARROW_RIGHT,ARROW_DOWN,
-    LINE_HOME,LINE_END,MULTILINE_HOME,MULTILINE_END,
-    PAGE_UP_CURSOR,PAGE_DOWN_CURSOR,PAGE_UP_VIEW,PAGE_DOWN_VIEW
-};
-
-class InputKeyHandler
-{
-public:
-    InputKeyHandler(V<V<S>>& inputs, P<I,I>& cursorPosition);
-
-    P<C,SpecialKey> handleKey(I key);
-
-    static const bool SIGNATURE;
-private:
-    B signatureKey;
-    V<V<S>> inputs;
-    P<I,I> cursorPosition;
-
-    SpecialKey handleSpecialKey(I specialKey);
-    void handlePrintableKey(I printableKey);
-};
 
 //COMMANDHANDLER CZYTAJACY WSZYSTKO JEST POTRZEBNY DO PRZECHODZENIA MIEDZY MENU
 
@@ -54,15 +29,12 @@ public:
     void newInputPage();
     void setMultilineInput(B isMultiline);
 
-    void setEffects(V<P<std::function<void(S&)>,I>> effects);
-    void clearEffects();
-
 private:
     B multiline;
     V<V<S>> inputs;
     P<I,I> cursorPosition;
 
+    InteractionEffectsHandler interactionEffectsHandler;
     InputKeyHandler inputKeyHandler;
     CommandHandler commandHandler;
-    V<P<std::function<void(S&)>,I>> effects;
 };

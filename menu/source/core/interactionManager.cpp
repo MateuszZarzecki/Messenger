@@ -3,7 +3,7 @@
 //ADD EFFECTS
 Return<MenuOutcome,V<S>> InteractionManager::interact(V<P<S,B>> prompts, B newPage)
 {
-    Return<MenuOutcome,V<S>> inputs;
+    Return<MenuOutcome,V<S>> result;
 
     if(newPage)
     {
@@ -22,23 +22,13 @@ Return<MenuOutcome,V<S>> InteractionManager::interact(V<P<S,B>> prompts, B newPa
         while(true)
         {
             Return<MenuOutcome,P<C,SpecialKey>> processedKey = inputHandler.processInput();
-            inputs.outcome = processedKey.outcome;
+            result.outcome = processedKey.outcome;
+            outputHandler.handleKey(processedKey.data);
 
-            outputHandler.handleSpecialKeys(processedKey.data.second);
-            if(processedKey.data.first != '\0')
-            {
-                C character = processedKey.data.first;
-                outputHandler << character;
-            }
-
-
-            if(inputs.outcome == MenuOutcome::QUIT) return inputs;
-            if(inputs.outcome == MenuOutcome::FINISH)
-            {
-                break;
-            }
+            if(result.outcome == MenuOutcome::QUIT) return result;
+            if(result.outcome == MenuOutcome::FINISH) break;
         }
     }
-    inputs.data = inputHandler.getInputs()[inputHandler.getInputs().size()-1];
-    return inputs;
+    result.data = inputHandler.getInputs().back();
+    return result;
 }

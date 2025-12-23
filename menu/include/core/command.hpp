@@ -7,7 +7,8 @@
 #include <conio.h>
 #include <functional>
 
-#include "output.hpp"
+//No OUTPUTHANDLER!!!!!
+
 #include "projectBase.hpp"
 
 enum class MenuOutcome { NONE=-1,FINISH,QUIT,FAILURE };
@@ -20,8 +21,6 @@ public:
     MenuOutcome handleCommands(S input);
     S unescapePrefixes(S input);
 private:
-    OutputHandler outputHandler;
-
     char prefix, postfix, paramChar;
     UM<S, CommandCode> commands;
     UM<CommandCode, MenuOutcome> commandsOutcomes;

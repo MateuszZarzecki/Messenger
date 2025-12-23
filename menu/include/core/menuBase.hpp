@@ -10,12 +10,22 @@
 #include "interactionManager.hpp"
 #include "sharedModels.hpp"
 
+class MenuBase;
+
+class MenuRepository
+{
+public:
+    MenuBase* current;
+    V<MenuBase*> previousMenus;
+};
+
 class MenuBase
 {
 public:
     virtual void display() = 0;
 protected:
 
+    MenuRepository menuRepository;
     InteractionManager interactionManager;
 
     PrimeUser* primeUser;
@@ -31,8 +41,4 @@ protected:
     S getHeader();
 };
 
-namespace MenuRepository
-{
-    inline MenuBase* current = nullptr;
-    inline std::stack<MenuBase*> previousMenus = {};
-};
+

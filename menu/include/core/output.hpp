@@ -4,6 +4,9 @@
 #include <functional>
 
 #include "projectBase.hpp"
+#include "key.hpp"
+#include "command.hpp"
+#include "effect.hpp"
 
 enum class ConsoleCode {
     NLINE,
@@ -59,12 +62,16 @@ public:
     void clearOutputBuffer();
     V<S> getOutputBuffer();
 
-    void handleSpecialKeys(SpecialKey specialKey);
+
+
+    void handleKey(P<C,SpecialKey> specialKey);
 private:
     V<S> outputs;
     std::ostream& os;
 
-    V<P<std::function<void(S&)>,I>> effects;
+    InteractionEffectsHandler interactionEffectsHandler;
+    OutputKeyHandler outputKeyHandler;
+
 };
 
 
