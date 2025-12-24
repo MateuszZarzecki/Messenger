@@ -7,6 +7,7 @@
 #include <conio.h>
 #include <functional>
 
+#include "menuRepository.hpp"
 #include "projectBase.hpp"
 #include "command.hpp"
 #include "key.hpp"
@@ -19,7 +20,7 @@
 
 class InputHandler {
 public:
-    InputHandler();
+    InputHandler(MenuRepository& menuRepository);
 
     Return<MenuOutcome,P<C,SpecialKey>> processInput();
 

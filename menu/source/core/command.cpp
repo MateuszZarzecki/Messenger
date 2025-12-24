@@ -1,12 +1,13 @@
 #include "command.hpp"
 
-CommandHandler::CommandHandler() {
+CommandHandler::CommandHandler(MenuRepository& menuRepository)
+    : menuRepository(menuRepository)
+{
 
     prefix = ':'; postfix = ';'; paramChar = '=';
     commandsOutcomes = {
         {CommandCode::NONE, MenuOutcome::NONE},
         {CommandCode::MANUAL, MenuOutcome::NONE},
-        {CommandCode::TEXTCOLOR, MenuOutcome::NONE},
         {CommandCode::FINISH, MenuOutcome::FINISH},
         {CommandCode::QUIT, MenuOutcome::QUIT},
         {CommandCode::HOME, MenuOutcome::QUIT},
@@ -18,7 +19,6 @@ CommandHandler::CommandHandler() {
         {"h", CommandCode::HOME}, {"home", CommandCode::HOME},
         {"m", CommandCode::MANUAL}, {"manual", CommandCode::MANUAL},
         {"b", CommandCode::BACK}, {"back", CommandCode::BACK},
-        {"tc", CommandCode::TEXTCOLOR}, {"textcolor", CommandCode::TEXTCOLOR}
     };
     commandsResponses = {};
 }

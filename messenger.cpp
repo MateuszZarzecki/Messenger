@@ -8,10 +8,6 @@
 #include <limits>
 
 int main() {
-    OutputHandler outputHandler;
-    InputHandler inputHandler;
-    InteractionManager interactionManager;
-
     while(true)
     {
         int c = getch();

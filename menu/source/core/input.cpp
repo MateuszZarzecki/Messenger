@@ -1,7 +1,7 @@
 #include "input.hpp"
 
-InputHandler::InputHandler()
-    : inputs({{}}), inputKeyHandler(inputs,cursorPosition) {}
+InputHandler::InputHandler(MenuRepository& menuRepository)
+    : inputs({{}}), inputKeyHandler(inputs,cursorPosition), commandHandler(menuRepository) {}
 
 Return<MenuOutcome,P<C,SpecialKey>> InputHandler::processInput()
 {
@@ -12,7 +12,7 @@ Return<MenuOutcome,P<C,SpecialKey>> InputHandler::processInput()
     MenuOutcome outcome = commandHandler.handleCommands(inputs.back().back());
     if(outcome == MenuOutcome::NONE || outcome == MenuOutcome::FINISH)
     {
-        effectsHandler.handleEffects();
+        //interactionEffectsHandler();
     }
 
     result.outcome = outcome;

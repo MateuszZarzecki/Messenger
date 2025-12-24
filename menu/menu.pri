@@ -11,6 +11,8 @@ SOURCES += \
     $$PWD/source/core/key.cpp \
     $$PWD/source/core/menuBase.cpp \
     $$PWD/source/core/menuManager.cpp \
+    $$PWD/source/core/menuRepository.cpp \
+    $$PWD/source/core/message.cpp \
     $$PWD/source/core/output.cpp \
     #menus
     $$PWD/source/menus/authenticationMenu.cpp \
@@ -26,8 +28,10 @@ HEADERS += \
     $$PWD/include/core/key.hpp \
     $$PWD/include/core/menuBase.hpp \
     $$PWD/include/core/menuManager.hpp \
+    $$PWD/include/core/menuRepository.hpp \
+    $$PWD/include/core/message.hpp \
     $$PWD/include/core/output.hpp \
-    #$$PWDs
+    #menus
     $$PWD/include/menus/authenticationMenu.hpp \
     $$PWD/include/menus/chatMenu.hpp \
     $$PWD/include/menus/mainMenu.hpp

@@ -9,11 +9,10 @@
 class InteractionManager
 {
 public:
-    InteractionManager(MenuRepository menuRepository);
+    InteractionManager(MenuRepository& menuRepository);
     //ADD EFFECTS
     Return<MenuOutcome,V<S>> interact(V<P<S,B>> prompts, B newPage);
 private:
     OutputHandler outputHandler;
     InputHandler inputHandler;
-
 };

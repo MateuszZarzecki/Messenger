@@ -9,26 +9,18 @@
 #include "input.hpp"
 #include "interactionManager.hpp"
 #include "sharedModels.hpp"
-
-class MenuBase;
-
-class MenuRepository
-{
-public:
-    MenuBase* current;
-    V<MenuBase*> previousMenus;
-};
+#include "menuRepository.hpp"
 
 class MenuBase
 {
 public:
     virtual void display() = 0;
+    static void setMenuRepository(MenuRepository& menuRepository);
 protected:
+    static MenuRepository& menuRepository;
+    static InteractionManager* interactionManager;
 
-    MenuRepository menuRepository;
-    InteractionManager interactionManager;
-
-    PrimeUser* primeUser;
+    PrimeUser* primeUser; // TRZEBA GO GDZIES USTAWIC
 
     S menuName;
     UM<S,MenuBase*> submenus;

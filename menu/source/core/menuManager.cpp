@@ -2,16 +2,17 @@
 
 MenuManager::MenuManager()
 {
-    MenuRepository::current = new AuthenticationMenu();
+    MenuBase::setMenuRepository(menuRepository);
 }
 MenuManager::~MenuManager()
-{
+{}
 
-}
 void MenuManager::display()
 {
-    while(MenuRepository::current)
+    while(menuRepository.current)
     {
-        MenuRepository::current->display();
+        menuRepository.current->display();
     }
-} 
+}
+
+

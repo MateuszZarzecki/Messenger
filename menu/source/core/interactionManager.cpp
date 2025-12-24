@@ -1,6 +1,9 @@
 #include "interactionManager.hpp"
 
 //ADD EFFECTS
+InteractionManager::InteractionManager(MenuRepository& menuRepository)
+    : inputHandler(menuRepository) {}
+
 Return<MenuOutcome,V<S>> InteractionManager::interact(V<P<S,B>> prompts, B newPage)
 {
     Return<MenuOutcome,V<S>> result;
