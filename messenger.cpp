@@ -4,13 +4,14 @@
 #include "localUserApi.hpp"
 
 #include <sstream>
-
+#include <functional>
 #include <limits>
 
-int main() {
-    while(true)
-    {
-        int c = getch();
-        std::cout << c << std::endl;
-    }
+//MenuBase fix due to changes
+//command footer create
+
+int main()
+{
+    MenuManager mg;
+    mg.display();
 }

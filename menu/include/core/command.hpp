@@ -7,8 +7,6 @@
 #include <conio.h>
 #include <functional>
 
-//No OUTPUTHANDLER!!!!!
-
 #include "projectBase.hpp"
 #include "menuRepository.hpp"
 

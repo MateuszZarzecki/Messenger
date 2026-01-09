@@ -17,10 +17,10 @@ public:
     virtual void display() = 0;
     static void setMenuRepository(MenuRepository& menuRepository);
 protected:
-    static MenuRepository& menuRepository;
-    static InteractionManager* interactionManager;
+    static inline MenuRepository* menuRepository = nullptr;
+    static inline InteractionManager* interactionManager = nullptr;
 
-    PrimeUser* primeUser; // TRZEBA GO GDZIES USTAWIC
+    PrimeUser* primeUser;
 
     S menuName;
     UM<S,MenuBase*> submenus;

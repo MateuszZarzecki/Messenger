@@ -5,44 +5,23 @@
 
 #include "projectBase.hpp"
 
-template <typename DataType>
+class Interaction;
+
 class EffectsHandler
 {
 public:
-    EffectsHandler() = default;
+    EffectsHandler();
 
-    void setData(DataType* data)
-    {
-        this->data = data;
-    }
-
-    void setEffects(V<std::function<void(DataType&)>> effects)
-    {
-        this->effects = effects;
-    }
-    void clearEffects()
-    {
-        effects.clear();
-    }
-    void handleEffects()
-    {
-        for(std::function<void(DataType&)> effect : effects)
-        {
-            effect(*data);
-        }
-    }
+    void newPage(V<Interaction>& interactions);
+    void setEffects(V<std::function<void(V<Interaction>&)>> effects);
+    void handleEffects();
 private:
-    DataType* data;
-    V<std::function<void(DataType&)>> effects;
+    V<Interaction>& interactions;
+    V<std::function<void(V<Interaction>&)>> effects;
 };
 
-class InteractionEffectsHandler
-{
-public:
-    InteractionEffectsHandler();
 
-    void setInteractionEffects(V<P<std::function<void(V<S>&)>,std::function<void(S&)>>> interactionEffects);
-private:
-    EffectsHandler<S> outputEffectsHandler;
-    EffectsHandler<V<S>> inputEffectsHandler;
-};
+*    Imie; |
+*    Nazwisko |
+*    Password |
+    |

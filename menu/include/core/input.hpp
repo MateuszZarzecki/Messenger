@@ -18,24 +18,32 @@
 
 //COMMANDHANDLER CZYTAJACY WSZYSTKO JEST POTRZEBNY DO PRZECHODZENIA MIEDZY MENU
 
-class InputHandler {
+class MessageComposer
+{
+
+};
+
+class InputHandler
+{
 public:
     InputHandler(MenuRepository& menuRepository);
 
     Return<MenuOutcome,P<C,SpecialKey>> processInput();
 
-    V<V<S>> getInputs();
+    V<V<S>>& getInputs();
+
     void setInputs(V<V<S>> inputs);
 
-    void newInputPage();
+    void newPage();
     void setMultilineInput(B isMultiline);
 
 private:
-    B multiline;
     V<V<S>> inputs;
     P<I,I> cursorPosition;
+    B multiline;
 
-    InteractionEffectsHandler interactionEffectsHandler;
     InputKeyHandler inputKeyHandler;
     CommandHandler commandHandler;
+    MessageComposer messageComposer;
 };
+

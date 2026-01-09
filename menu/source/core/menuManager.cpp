@@ -2,6 +2,7 @@
 
 MenuManager::MenuManager()
 {
+    AuthenticationMenu am;
     MenuBase::setMenuRepository(menuRepository);
 }
 MenuManager::~MenuManager()

@@ -20,9 +20,9 @@ public:
 
     static const bool SIGNATURE;
 private:
+    V<V<S>>& inputs;
+    P<I,I>& cursorPosition;
     B signatureKey;
-    V<V<S>> inputs;
-    P<I,I> cursorPosition;
 
     SpecialKey handleSpecialKey(I specialKey);
     void handlePrintableKey(I printableKey);

@@ -34,21 +34,28 @@ OutputString& OutputString::operator<<(ConsoleCode consoleCode)
 
 OutputHandler::OutputHandler() : os(std::cout) {}
 
-OutputHandler& OutputHandler::operator<<(OutputString& consoleString)
+OutputHandler& OutputHandler::operator<<(OutputString& outputString)
 {
-    os << consoleString.getString();
+    os << outputString.getString();
+    updateOutputStore(outputString);
     return *this;
 }
 OutputHandler& OutputHandler::operator<<(ConsoleCode consoleCode)
 {
-    consoleCodeHandling(os, consoleCode);
+    handleConsoleCode(os, consoleCode);
+    updateOutputStore(consoleCode);
     return *this;
 }
-void OutputHandler::clearOutputBuffer()
+void OutputHandler::clearOutputStore()
 {
-    outputs.clear();
+    outputStore.clear();
 }
-V<S> OutputHandler::getOutputBuffer()
+void OutputHandler::newInteraction()
 {
-    return outputs;
+    outputStore.back().push_back({});
+}
+
+void OutputHandler::handleKey(P<C,SpecialKey> specialKey)
+{
+    // OUTPUT KEY HANDLER
 }

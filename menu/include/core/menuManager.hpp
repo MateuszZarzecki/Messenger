@@ -12,6 +12,7 @@ public:
     void display();
 private:
     MenuRepository menuRepository;
+    MenuBase* current;
 };
 
 //key

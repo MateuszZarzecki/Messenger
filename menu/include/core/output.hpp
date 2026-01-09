@@ -17,7 +17,7 @@ enum class ConsoleCode {
 
 class ConsoleOutput {
 protected:
-    std::ostream& consoleCodeHandling(std::ostream& os, ConsoleCode consoleCode);
+    std::ostream& handleConsoleCode(std::ostream& os, ConsoleCode consoleCode);
 };
 
 class OutputString : public ConsoleOutput {
@@ -49,29 +49,47 @@ public:
     template<typename OutputType>
     OutputHandler& operator<<(OutputType&& output) {
         os << output;
+        updateOutputStore(output);
         return *this;
     }
     template<typename OutputType>
     OutputHandler& operator<<(OutputType& output) {
         os << output;
+        updateOutputStore(output);
         return *this;
     }
     OutputHandler& operator<<(ConsoleCode consoleCode);
-    OutputHandler& operator<<(OutputString& consoleString);
+    OutputHandler& operator<<(OutputString& outputString);
 
-    void clearOutputBuffer();
-    V<S> getOutputBuffer();
-
-
+    void clearOutputStore();
+    V<S>& getInteraction();
 
     void handleKey(P<C,SpecialKey> specialKey);
+    void newPage();
+    void newInteraction();
 private:
-    V<S> outputs;
-    std::ostream& os;
+    S* outputStoreTarget;
+    V<V<S>> outputStore;
 
-    InteractionEffectsHandler interactionEffectsHandler;
+    std::ostream& os;
+    std::ostringstream oss;
+
     OutputKeyHandler outputKeyHandler;
 
+    template<typename OutputType>
+    void updateOutputStore(OutputType&& output)
+    {
+        oss.clear();
+        oss << output;
+        *outputStoreTarget += oss.str();
+    }
+    template<typename OutputType>
+    void updateOutputStore(OutputType& output)
+    {
+        oss.clear();
+        oss << output;
+        *outputStoreTarget += oss.str();
+    }
 };
 
 

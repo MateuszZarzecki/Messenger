@@ -2,6 +2,9 @@
 
 const bool InputKeyHandler::SIGNATURE = true;
 
+InputKeyHandler::InputKeyHandler(V<V<S>>& inputs, P<I,I>& cursorPosition)
+    : inputs(inputs), cursorPosition(cursorPosition) {}
+
 P<C,SpecialKey> InputKeyHandler::handleKey(I key)
 {
     P<C,SpecialKey> result = {'\0',SpecialKey::NONE};
@@ -83,3 +86,5 @@ SpecialKey InputKeyHandler::handleSpecialKey(int key)
     }
     return SpecialKey::NONE;
 }
+
+OutputKeyHandler::OutputKeyHandler() {}
