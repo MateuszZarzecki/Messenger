@@ -11,26 +11,20 @@ enum class SpecialKey
     PAGE_UP_CURSOR,PAGE_DOWN_CURSOR,PAGE_UP_VIEW,PAGE_DOWN_VIEW
 };
 
-class InputKeyHandler
+enum class KeyPrefix
 {
-public:
-    InputKeyHandler(V<V<S>>& inputs, P<I,I>& cursorPosition);
-
-    P<C,SpecialKey> handleKey(I key);
-
-    static const bool SIGNATURE;
-private:
-    V<V<S>>& inputs;
-    P<I,I>& cursorPosition;
-    B signatureKey;
-
-    SpecialKey handleSpecialKey(I specialKey);
-    void handlePrintableKey(I printableKey);
+    YES,NO
 };
 
-class OutputKeyHandler
+class InputKeyResolver
 {
 public:
-    OutputKeyHandler();
+
+    InputKeyResolver();
+    Pair<char,SpecialKey> resolveKey(int key);
 private:
+    Map<Pair<KeyPrefix,int>,SpecialKey> specialKeys;
+    bool keyPrefix;
+
+    SpecialKey resolveSpecialKey(int specialKey);
 };

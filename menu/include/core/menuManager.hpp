@@ -5,25 +5,15 @@
 #include "chatMenu.hpp"
 #include "mainMenu.hpp"
 
+
 class MenuManager {
 public:
     MenuManager();
-    ~MenuManager();
     void display();
 private:
-    MenuRepository menuRepository;
-    MenuBase* current;
+    Frame* frame;
+    Vector <UILayout*> previousMenus;
+
+    InputHandler inputHandler;
+    OutputHandler outputHandler;
 };
-
-//key
-
-//
-
-//nie ma klucza
-//getKeyAPI 
-//zapis klucza
-//szyfrowanie kluczem
-//po x czasie klucz sie resetuje
-
-// Logowanie bez klucza
-  

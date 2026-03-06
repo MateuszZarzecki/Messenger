@@ -1,21 +1,42 @@
 #include "key.hpp"
 
-const bool InputKeyHandler::SIGNATURE = true;
 
-InputKeyHandler::InputKeyHandler(V<V<S>>& inputs, P<I,I>& cursorPosition)
-    : inputs(inputs), cursorPosition(cursorPosition) {}
-
-P<C,SpecialKey> InputKeyHandler::handleKey(I key)
+InputKeyResolver::InputKeyResolver()
+    : keyPrefix(false)
 {
-    P<C,SpecialKey> result = {'\0',SpecialKey::NONE};
-
-    P<I,I> printableKeysRange = {32,126};
-    V<P<I,SpecialKey>> specialPrintableKeys = {{58,SpecialKey::COLON}};
-
-    if(printableKeysRange.first <= key && key <= printableKeysRange.second)
+    specialKeys =
     {
-        result.first = (C)key;
-        for(P<I,SpecialKey> specialKey : specialPrintableKeys)
+        {{KeyPrefix::NO,8},SpecialKey::BACKSPACE},
+        {{KeyPrefix::NO,9},SpecialKey::TAB},
+        {{KeyPrefix::NO,13},SpecialKey::ENTER},
+
+        {{KeyPrefix::YES,83},SpecialKey::DELETE},
+        {{KeyPrefix::YES,75},SpecialKey::ARROW_LEFT},
+        {{KeyPrefix::YES,72},SpecialKey::ARROW_TOP},
+        {{KeyPrefix::YES,77},SpecialKey::ARROW_RIGHT},
+        {{KeyPrefix::YES,80},SpecialKey::ARROW_DOWN},
+        {{KeyPrefix::YES,71},SpecialKey::LINE_HOME},
+        {{KeyPrefix::YES,79},SpecialKey::LINE_END},
+        {{KeyPrefix::YES,119},SpecialKey::MULTILINE_HOME},
+        {{KeyPrefix::YES,117},SpecialKey::MULTILINE_END},
+        {{KeyPrefix::YES,73},SpecialKey::PAGE_UP_CURSOR},
+        {{KeyPrefix::YES,81},SpecialKey::PAGE_DOWN_CURSOR},
+        {{KeyPrefix::YES,134},SpecialKey::PAGE_UP_VIEW},
+        {{KeyPrefix::YES,118},SpecialKey::PAGE_DOWN_VIEW},
+    };
+}
+
+Pair <char,SpecialKey> InputKeyResolver::resolveKey(int key)
+{
+    Pair <char,SpecialKey> result = {-1,SpecialKey::NONE};
+
+    Scope<int> printableKeysRange = {32,126};
+    Vector <Pair<int,SpecialKey>> specialPrintableKeys = {{58,SpecialKey::COLON}};
+
+    if(printableKeysRange.in(key))
+    {
+        result.first = (char)key;
+        for(Pair <int,SpecialKey> specialKey : specialPrintableKeys)
         {
             if(key == specialKey.first)
             {
@@ -24,67 +45,39 @@ P<C,SpecialKey> InputKeyHandler::handleKey(I key)
             }
         }
     }
-    SpecialKey specialKey = handleSpecialKey(key);
-    result.second = specialKey;
-
-    if(result.first != '\0')
+    else
     {
-        C character = key;
-        S& currentInput = inputs.back().back();
-
-        currentInput.insert(cursorPosition.second,std::to_string(character));
-        cursorPosition.second++;
+        SpecialKey specialKey = resolveSpecialKey(key);
+        result.second = specialKey;
     }
-
     return result;
 }
-SpecialKey InputKeyHandler::handleSpecialKey(int key)
+SpecialKey InputKeyResolver::resolveSpecialKey(int key)
 {
-    P<I,I> extendedKeysSignatures = {0,224};
+    int constexpr specialKeySignature_1 = 0;
+    int constexpr specialKeySignature_2 = 224;
 
-    M<P<B,I>,SpecialKey> specialKeys =
+    if(key == specialKeySignature_1 || key == specialKeySignature_2)
     {
-        {{!SIGNATURE,8},SpecialKey::BACKSPACE},
-        {{!SIGNATURE,58},SpecialKey::COLON},
-        {{!SIGNATURE,59},SpecialKey::SEMICOLON},
-        {{!SIGNATURE,9},SpecialKey::TAB},
-        {{!SIGNATURE,13},SpecialKey::ENTER},
-
-        {{SIGNATURE,83},SpecialKey::DELETE},
-        {{SIGNATURE,75},SpecialKey::ARROW_LEFT},
-        {{SIGNATURE,72},SpecialKey::ARROW_TOP},
-        {{SIGNATURE,77},SpecialKey::ARROW_RIGHT},
-        {{SIGNATURE,80},SpecialKey::ARROW_DOWN},
-        {{SIGNATURE,71},SpecialKey::LINE_HOME},
-        {{SIGNATURE,79},SpecialKey::LINE_END},
-        {{SIGNATURE,119},SpecialKey::MULTILINE_HOME},
-        {{SIGNATURE,117},SpecialKey::MULTILINE_END},
-        {{SIGNATURE,73},SpecialKey::PAGE_UP_CURSOR},
-        {{SIGNATURE,81},SpecialKey::PAGE_DOWN_CURSOR},
-        {{SIGNATURE,134},SpecialKey::PAGE_UP_VIEW},
-        {{SIGNATURE,118},SpecialKey::PAGE_DOWN_VIEW},
-    };
-
-    if(key == extendedKeysSignatures.first || key == extendedKeysSignatures.second)
-    {
-        return SpecialKey::NONE;
+        keyPrefix = true;
     }
-    if(specialKeys[{signatureKey,key}] == SpecialKey::BACKSPACE)
+    else
     {
-        if(cursorPosition.second != 0)
+        if(keyPrefix)
         {
-            cursorPosition.second--;
+            keyPrefix = false;
+            if(specialKeys.find({KeyPrefix::YES,key}) != specialKeys.end())
+            {
+                return specialKeys[{KeyPrefix::YES,key}];
+            }
         }
         else
         {
-            if(cursorPosition.first != 0)
+            if(specialKeys.find({KeyPrefix::NO,key}) != specialKeys.end())
             {
-                cursorPosition.first--;
+                return specialKeys[{KeyPrefix::NO,key}];
             }
         }
-        return SpecialKey::BACKSPACE;
     }
     return SpecialKey::NONE;
 }
-
-OutputKeyHandler::OutputKeyHandler() {}

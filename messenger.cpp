@@ -12,6 +12,5 @@
 
 int main()
 {
-    MenuManager mg;
-    mg.display();
+
 }

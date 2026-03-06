@@ -6,6 +6,7 @@
 #include "localUserApi.hpp"
 #include "chatMenu.hpp"
 
-class MainMenu : public MenuBase {
-public:     void display() override;
-};
+// class MainMenu : public UIVerticalLayout
+// {
+// public:     S display() override;
+// };

@@ -8,22 +8,29 @@
 #include <functional>
 
 #include "projectBase.hpp"
-#include "menuRepository.hpp"
 
-enum class MenuOutcome { NONE=-1,FINISH,QUIT,FAILURE };
-enum class CommandCode { NONE=-1,FINISH,QUIT,HOME,MANUAL,BACK };
+//enum class MenuOutcome { NONE=-1,FINISH,QUIT };
+enum class CommandCode { NONE,FINISH,QUIT,ESCAPE,HOME,MANUAL,BACK,COLON,FIX,FAILURE };
 
-class CommandHandler {
+class CommandResolver {
 public:
-    CommandHandler(MenuRepository& menuRepository);
+    CommandResolver();
 
-    MenuOutcome handleCommands(S input);
-    S unescapePrefixes(S input);
+    CommandCode resolveCommand(char character);
+
 private:
-    MenuRepository& menuRepository;
-
-    char prefix, postfix, paramChar;
-    UM<S, CommandCode> commands;
-    UM<CommandCode, MenuOutcome> commandsOutcomes;
-    UM<CommandCode, void(CommandHandler::*)(V<S>)> commandsResponses;
+    char prefix, sufix;
+    UnorderedMap <String, CommandCode> commands;
+    String commandInput;
+    bool commandInputActive;
 };
+
+/*WHat is your name: mateusz
+ * Zarzecki imienia nie znam swego
+ * drugiego nie mam i figo fago
+------------------
+:: - : in input printed
+:gbn
+*/
+
+//POKAZAC ZE WSKAZNIK NA FORWARD DECLARATION WYWOLUJE METODY

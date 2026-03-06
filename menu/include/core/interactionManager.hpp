@@ -6,44 +6,21 @@
 #include "output.hpp"
 #include "projectBase.hpp"
 
-class Interaction
-{
-public:
-    Interaction(S prompt, V<S> input, S& interaction);
+// class InteractionManager
+// {
+// public:
+//     InteractionManager(MenuRepository& menuRepository);
+//     Return<MenuOutcome,V<S>> handlePageInteraction(V<P<S,B>> prompts, B newPage);
 
-    S getPrompt();
-    void setPrompt();
+//     V<Interaction> getInteractions();
+//     Interaction getInteraction(size_t position);
 
-    V<S> getInput();
-    void setInput();
+//     V<Interaction> interactions; // to w private
 
-    S getInteractionPayload();
-    void setInteractionPayload();
-private:
-    S prompt;
-    size_t promptStartLine, promptEndLine, promptStartInLinePosition, promptEndInLinePosition;
+// private:
+//     OutputHandler outputHandler;
+//     InputHandler inputHandler;
+//     EffectsHandler effectsHandler;
 
-    V<S> input;
-    size_t inputStartLine, inputEndLine, inputStartInLinePosition, inputEndInLinePosition;
-
-    S& interactionPayload;
-};
-
-class InteractionManager
-{
-public:
-    InteractionManager(MenuRepository& menuRepository);
-    Return<MenuOutcome,V<S>> handlePageInteraction(V<P<S,B>> prompts, B newPage);
-
-    V<Interaction> getInteractions();
-    Interaction getInteraction(size_t position);
-
-    V<Interaction> interactions; // to w private
-
-private:
-    OutputHandler outputHandler;
-    InputHandler inputHandler;
-    EffectsHandler effectsHandler;
-
-    //interact(P<S,B> prompt)
-};
+//     //interact(P<S,B> prompt)
+// };

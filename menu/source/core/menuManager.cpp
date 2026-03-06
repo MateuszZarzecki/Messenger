@@ -2,18 +2,12 @@
 
 MenuManager::MenuManager()
 {
-    AuthenticationMenu am;
-    MenuBase::setMenuRepository(menuRepository);
+    frame->menuLayout = new AuthenticationMenu();
 }
-MenuManager::~MenuManager()
-{}
-
 void MenuManager::display()
 {
-    while(menuRepository.current)
+    while(frame->menuLayout)
     {
-        menuRepository.current->display();
+        outputHandler << frame->menuLayout->display();
     }
 }
-
-

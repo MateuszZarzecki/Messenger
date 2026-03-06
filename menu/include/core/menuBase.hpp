@@ -6,31 +6,135 @@
 #include <stack>
 
 #include "projectBase.hpp"
+#include "output.hpp"
 #include "input.hpp"
-#include "interactionManager.hpp"
-#include "sharedModels.hpp"
-#include "menuRepository.hpp"
 
-class MenuBase
+//=====UI BASE CLASSES =====//
+
+class UIElement
 {
 public:
-    virtual void display() = 0;
-    static void setMenuRepository(MenuRepository& menuRepository);
+    enum class State {NONE,FOCUSED,SUCCEED,INFO,WARNING,ERROR};
+    virtual OutputString& display() = 0;
+
+    void setState(State state);
+    State getState();
 protected:
-    static inline MenuRepository* menuRepository = nullptr;
-    static inline InteractionManager* interactionManager = nullptr;
-
-    PrimeUser* primeUser;
-
-    S menuName;
-    UM<S,MenuBase*> submenus;
-
-    MenuOutcome chooseSubmenu(S& output);
-    Return<MenuOutcome,S> chooseOption(S& output, V<S>& options);
-    Return<MenuOutcome,V<S>> fillForm(V<P<S,B>>& outputs, V<std::function<void(S&,S&)>> effects = {});
-
-    MenuOutcome wrongInput();
-    S getHeader();
+    OutputString oString;
+    State state;
 };
+
+class InteractiveUIElement : public UIElement
+{
+public:
+    OutputString& display() override = 0;
+
+    void addEffect(std::function<void()> effect);
+    void clearEffects();
+private:
+    Vector <std::function<void()>> effects;
+};
+
+class UILayout : public UIElement
+{
+public:
+    void addElement();
+    void clearElements();
+private:
+    Vector <UIElement*> elements;
+};
+
+//=====STATIC UI ELEMENTS=====//
+
+class UILabel : public UIElement
+{
+public:
+    UILabel(String label);
+    OutputString& display() override;
+
+    void setLabel(String label);
+    String getLabel();
+private:
+    String label;
+};
+class UIHeader : public UIElement
+{
+public:
+    UIHeader(String menuName);
+    OutputString& display() override;
+
+    void setMenuName(String menuName);
+    String getMenuName();
+private:
+    String menuName;
+};
+//=====INTERACTIVE UI ELEMENTS=====//
+
+class UICommandInput : public InteractiveUIElement
+{
+private:
+    bool active;
+};
+
+class UITextInput : public InteractiveUIElement
+{
+public:
+    UITextInput(String shadowText);
+    OutputString& display() override;
+};
+class UICheckbox : public InteractiveUIElement
+{
+public:
+    UICheckbox(bool checked);
+    OutputString& display() override;
+};
+class UIProgressBar : public InteractiveUIElement
+{
+public:
+    UIProgressBar(int progress);
+    OutputString& display() override;
+};
+
+//=====UI CONTAINTERS=====//
+
+class UIHorizontalLayout : public UILayout
+{
+};
+class UIVerticalLayout : public UILayout
+{
+};
+class UIMenuLayout : public UILayout
+{
+    String getMenuName();
+private:
+    const String menuName;
+};
+class Frame : public UIVerticalLayout
+{
+public:
+    Frame(UIMenuLayout menu);
+
+    UIHeader header;
+    UIMenuLayout* menuLayout;
+    UICommandInput* commandInput;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -5,23 +5,23 @@
 #include "localUserApi.hpp"
 #include "mainMenu.hpp"
 
-class AuthenticationMenu : public MenuBase
+class AuthenticationMenu : public UIVerticalLayout
 {
-public:     void display() override;
+public:     OutputString& display() override;
 private:    LocalUserAPI localUserApi;
 };
-class LoginMenu : public MenuBase
+class LoginMenu : public UIVerticalLayout
 {
-public:     void display() override;
+public:     OutputString& display() override;
 private:    LocalUserAPI localUserApi;
 };
-class SignUpMenu : public MenuBase
+class SignUpMenu : public UIVerticalLayout
 {
-public:     void display() override;
+public:     OutputString& display() override;
 private:    LocalUserAPI localUserApi;
 };
-class VerifyEmailMenu : public MenuBase
+class VerifyEmailMenu : public UIVerticalLayout
 {
-public:     void display() override;
+public:     OutputString& display() override;
 private:    LocalUserAPI localUserApi;
 };

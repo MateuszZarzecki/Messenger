@@ -6,25 +6,19 @@
 #include <map>
 #include <algorithm>
 
-using C = char;
-using B = bool;
-using I = int;
-using F = float;
-using D = double;
-using L = long long;
-using S = std::string;
+using String = std::string;
 
 template<typename DataType>
-using V = std::vector<DataType>;
+using Vector = std::vector<DataType>;
 
 template<typename DataType1, typename DataType2>
-using UM = std::unordered_map<DataType1,DataType2>;
+using UnorderedMap = std::unordered_map<DataType1,DataType2>;
 
 template <typename DataType1, typename DataType2>
-using M = std::map<DataType1,DataType2>;
+using Map = std::map<DataType1,DataType2>;
 
 template<typename DataType1, typename DataType2>
-using P = std::pair<DataType1,DataType2>;
+using Pair = std::pair<DataType1,DataType2>;
 
 template<typename DataType1, typename DataType2, typename DataType3>
 class Triplet
@@ -38,8 +32,21 @@ public:
     DataType2 second;
     DataType3 third;
 };
-template<typename DataType1, typename DataType2, typename DataType3>
-using T = Triplet<DataType1,DataType2,DataType3>;
+
+template<typename DataType>
+class Scope
+{
+public:
+    Scope(DataType left, DataType right)
+        : left(left),right(right) {}
+
+    bool in(DataType value)
+    {
+        return (left <= value && value <= right);
+    }
+private:
+    DataType left,right;
+};
 
 template<typename Outcome, typename DataType = std::monostate>
 class [[nodiscard]] Return

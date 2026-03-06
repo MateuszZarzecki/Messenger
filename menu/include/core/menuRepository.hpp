@@ -8,5 +8,5 @@ class MenuRepository
 {
 public:
     MenuBase* current;
-    V<MenuBase*> previousMenus;
+    Vector <MenuBase*> previousMenus;
 };

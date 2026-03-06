@@ -6,7 +6,6 @@
 #include "projectBase.hpp"
 #include "key.hpp"
 #include "command.hpp"
-#include "effect.hpp"
 
 enum class ConsoleCode {
     NLINE,
@@ -22,9 +21,7 @@ protected:
 
 class OutputString : public ConsoleOutput {
 public:
-    OutputString() = default;
-
-    S getString();
+    String getString();
 
     template<typename OutputType>
     OutputString& operator<<(OutputType&& output) {
@@ -61,35 +58,9 @@ public:
     OutputHandler& operator<<(ConsoleCode consoleCode);
     OutputHandler& operator<<(OutputString& outputString);
 
-    void clearOutputStore();
-    V<S>& getInteraction();
-
-    void handleKey(P<C,SpecialKey> specialKey);
-    void newPage();
-    void newInteraction();
 private:
-    S* outputStoreTarget;
-    V<V<S>> outputStore;
-
     std::ostream& os;
     std::ostringstream oss;
-
-    OutputKeyHandler outputKeyHandler;
-
-    template<typename OutputType>
-    void updateOutputStore(OutputType&& output)
-    {
-        oss.clear();
-        oss << output;
-        *outputStoreTarget += oss.str();
-    }
-    template<typename OutputType>
-    void updateOutputStore(OutputType& output)
-    {
-        oss.clear();
-        oss << output;
-        *outputStoreTarget += oss.str();
-    }
 };
 
 
