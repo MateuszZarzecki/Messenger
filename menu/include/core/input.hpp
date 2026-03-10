@@ -18,11 +18,8 @@
 class InputHandler
 {
 public:
-    InputHandler();
-    Pair< Pair<char,SpecialKey>, CommandCode> handleInput();
-
+    Triplet<bool,char,SpecialKey> handleInput();
 private:
     InputKeyResolver inputKeyResolver;
-    CommandResolver commandResolver;
 };
 

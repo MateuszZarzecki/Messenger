@@ -3,12 +3,12 @@
 OutputString& AuthenticationMenu::display()
 {
     menuName = "AUTHENTICATION";
-    submenus = {{"1", new LoginMenu()}, {"2", new SignUpMenu()}};
+    //submenus = {{"1", new LoginMenu()}, {"2", new SignUpMenu()}};
 
-    String output = "1. Login\n"
-                    "2. Register\n";
+    oString << "1. Login" << ConsoleCode::NLINE <<
+        "2. Register" << ConsoleCode::NLINE;
 
-    chooseSubmenu(output);
+    return oString;
 }
 // void LoginMenu::display()
 // {

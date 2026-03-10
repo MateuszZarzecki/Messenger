@@ -1,17 +1,5 @@
 #include "menuBase.hpp"
 
-UIHeader::UIHeader(String menuName)
-    : menuName(menuName) {}
-
-void UIHeader::setMenuName(String menuName)
-{
-    this->menuName = menuName;
-}
-String UIHeader::getMenuName()
-{
-    return menuName;
-}
-
 OutputString& UIHeader::display()
 {
     String headerShortcuts = " BACK[:b] - QUIT[:q] - HOME[:h] - MANUAL[:m] - FIX[:fx] ";

@@ -1,12 +1,18 @@
 #include "input.hpp"
 
-Pair< Pair<char,SpecialKey>, CommandCode> InputHandler::handleInput()
+Triplet<bool,char,SpecialKey> InputHandler::handleInput()
 {
-    Pair< Pair<char,SpecialKey>, CommandCode> result;
+    Triplet<bool,char,SpecialKey> result;
+    result.first = false;
 
-    int key = getch();
-    result.first = inputKeyResolver.resolveKey(key);
-    result.second = commandResolver.resolveCommand(key);
+    if(_kbhit())
+    {
+        int key = getch();
+        result.first = true;
 
+        Pair<char,SpecialKey> resolvedKey = inputKeyResolver.resolveKey(key);
+        result.second = resolvedKey.first;
+        result.third = resolvedKey.second;
+    }
     return result;
 }

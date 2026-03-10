@@ -16,4 +16,7 @@ private:
 
     InputHandler inputHandler;
     OutputHandler outputHandler;
+    CommandResolver commandResolver;
+
+    void handleInputTransmission(Pair<char,SpecialKey> input);
 };
